@@ -52,7 +52,7 @@
 
         <TextView
             android:textAlignment="center"
-            android:text="Already Registered? Sign In "
+            android:text="TESTING "
             android:id="@+id/textViewSignIn"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

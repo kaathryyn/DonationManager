@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".LoginActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -33,10 +33,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
-            android:text="REGISTRATION"
+            android:text="LOGIN"
             android:layout_gravity="center"
             />
-
 
         <EditText
             android:layout_margin="15dp"
@@ -56,20 +55,18 @@
 
         <Button
             android:layout_margin="15dp"
-            android:id="@+id/buttonRegister"
-            android:text="Register"
+            android:id="@+id/buttonSignin"
+            android:text="Login"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <TextView
             android:textAlignment="center"
-            android:text="Already have an account? Login"
-            android:id="@+id/textViewSignIn"
+            android:text="Do not have an account yet? Signup HERE!"
+            android:id="@+id/textViewSignUp"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
     </LinearLayout>
-
-
 
 </android.support.design.widget.CoordinatorLayout>

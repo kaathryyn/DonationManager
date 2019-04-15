@@ -1,6 +1,8 @@
 package com.example.donationmanager;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -8,6 +10,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import org.w3c.dom.Text;
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
 
     private DrawerLayout drawer;
@@ -43,6 +46,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+
         //initialise firebase object
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -63,14 +67,44 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
+        navigationView.setNavigationItemSelectedListener(this);
         textViewUserEmail = (TextView) headerView.findViewById(R.id.textViewUserEmail);
         buttonLogout = (Button) headerView.findViewById(R.id.buttonLogout);
 
         //display account email
         textViewUserEmail.setText(user.getEmail());
 
+        if (savedInstanceState == null) {
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_profile);
+        }
+
         //add click listener on logout button
         buttonLogout.setOnClickListener(this);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.nav_profile:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+                break;
+
+            case R.id.nav_booking:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new BookingFragment()).commit();
+                break;
+
+            case R.id.nav_search:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchFragment()).commit();
+                break;
+
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
+
+        return true;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.donationmanager;
 
 import android.content.Intent;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,11 +22,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private DrawerLayout drawer;
     //firebase auth object
-    //private FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth;
 
     //activity elements
-    //private TextView textViewUserEmail;
-    //private Button buttonLogout;
+    private TextView textViewUserEmail;
+    private Button buttonLogout;
 
 
     @Override
@@ -44,11 +45,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         //initialise firebase object
 
-        //firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         //
 
-       /* if (firebaseAuth.getCurrentUser() == null) {
+        if (firebaseAuth.getCurrentUser() == null) {
             //close activity
             finish();
             //go back to login
@@ -60,14 +61,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         //initialise view objects
 
-        textViewUserEmail = (TextView) findViewById(R.id.textViewUserEmail);
-        buttonLogout = (Button) findViewById(R.id.buttonLogout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        textViewUserEmail = (TextView) headerView.findViewById(R.id.textViewUserEmail);
+        buttonLogout = (Button) headerView.findViewById(R.id.buttonLogout);
 
         //display account email
-        textViewUserEmail.setText("Welcome" + user.getEmail());
+        textViewUserEmail.setText(user.getEmail());
 
         //add click listener on logout button
-        buttonLogout.setOnClickListener(this);*/
+        buttonLogout.setOnClickListener(this);
     }
 
     @Override
@@ -86,11 +89,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         //if user logs out
 
-        /*if (view == buttonLogout) {
+        if (view == buttonLogout) {
             firebaseAuth.signOut();
             finish();
             startActivity(new Intent(this, LoginActivity.class));
-        }*/
+        }
 
     }
 }

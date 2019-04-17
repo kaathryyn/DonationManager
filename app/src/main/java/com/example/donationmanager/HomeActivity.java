@@ -31,7 +31,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private TextView textViewUserEmail;
     private Button buttonLogout;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +38,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         drawer = findViewById(R.id.drawer_layout);
 
@@ -51,7 +51,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        //
 
         if (firebaseAuth.getCurrentUser() == null) {
             //close activity
@@ -74,6 +73,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         //display account email
         textViewUserEmail.setText(user.getEmail());
 
+
+        //set default fragment to profile.
         if (savedInstanceState == null) {
 
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();

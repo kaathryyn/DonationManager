@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button buttonSignIn;
+    private Button buttonSignIn, buttonForgot;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView textViewSignup;
@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         buttonSignIn =  (Button) findViewById(R.id.buttonSignin);
+        buttonForgot = (Button) findViewById(R.id.buttonForgot);
         textViewSignup = (TextView) findViewById(R.id.textViewSignUp);
         progressDialog = new ProgressDialog(this);
         buttonSignIn.setOnClickListener(this);
@@ -52,6 +53,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         //attaching listeners
         buttonSignIn.setOnClickListener(this);
+        buttonForgot.setOnClickListener(this);
         textViewSignup.setOnClickListener(this);
 
     }
@@ -98,10 +100,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             userLogin();
         }
 
+        if(view == buttonForgot) {
+            finish();
+            startActivity(new Intent(this, ForgotPassword.class));
+        }
+
         if(view == textViewSignup) {
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
 
     }
+
+
 }

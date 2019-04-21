@@ -60,12 +60,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <Button
+            android:id="@+id/buttonForgot"
+            android:text="Forgot Password?"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            />
+
         <TextView
             android:textAlignment="center"
             android:text="Do not have an account yet? Signup HERE!"
             android:id="@+id/textViewSignUp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            />
 
     </LinearLayout>
 

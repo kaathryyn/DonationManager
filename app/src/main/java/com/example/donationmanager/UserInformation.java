@@ -2,15 +2,15 @@ package com.example.donationmanager;
 
 public class UserInformation {
 
-    public String name;
+    public String firstName;
+    public String lastName;
     public String address;
     public String accountType;
-    public int phoneNumber;
 
-    public UserInformation(String name, String address, String accountType, int phoneNumber) {
-        this.name = name;
+    public UserInformation(String firstName, String lastName, String address, String accountType) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.address = address;
         this.accountType = accountType;
-        this.phoneNumber = phoneNumber;
     }
 }

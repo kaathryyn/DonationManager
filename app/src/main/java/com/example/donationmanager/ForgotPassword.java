@@ -44,8 +44,8 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
 
         CharSequence email = email_txt.getText().toString();
 
-        if(TextUtils.isEmpty(email)){
-            Toast.makeText(this,"Please enter email",Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Please enter email", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -65,7 +65,7 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-        if (view==reset_password_btn){
+        if (view == reset_password_btn) {
             resetPassword();
         }
 

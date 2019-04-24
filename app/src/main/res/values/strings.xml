@@ -7,5 +7,10 @@
         <item>Donor</item>
         <item>Charity</item>
     </string-array>
+    <string name="user_firstname">First Name</string>
+    <string name="user_lastname">Last Name</string>
+    <string name="user_pnumber">eg. 0123456789</string>
+    <string name="user_street">Address</string>
+    <string name="user_city">City</string>
 
 </resources>

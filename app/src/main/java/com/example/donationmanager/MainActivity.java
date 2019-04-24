@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +16,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -27,6 +30,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //defining firebaseauth object
     private FirebaseAuth firebaseAuth;
+
+    //defining password regex
+    private static final Pattern PASSWORD_PATTERN =
+            Pattern.compile("^" +
+                    //"(?=.*[0-9])" +                 //at least 1 digit
+                    //"(?=.*[a-z])" +                 //at least 1 lower case
+                    //"(?=.*[A-Z])" +                 //at least 1 upper case
+                    //"(?=.*[!@#$%^&*+=?/<>~])" +     //at least 1 special char
+                    //"(?=\\S+$)" +                   //no white spaces
+                    ".{8,}" +                         //at least 8 char
+                    "$");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,20 +73,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textViewSignin.setOnClickListener(this);
     }
 
-    private void registerUser(){
+    private void registerUser() {
 
         //getting email and password from edit texts
         String email = editTextEmail.getText().toString().trim();
-        String password  = editTextPassword.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
 
         //checking if email and passwords are empty
-        if(TextUtils.isEmpty(email)){
-            Toast.makeText(this,"Please enter email",Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Please enter email", Toast.LENGTH_LONG).show();
+            return;
+        //checks if an account already exists with that email address
+        } else if(Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "An account already exists. Please enter a new email address", Toast.LENGTH_LONG).show();
             return;
         }
 
         if(TextUtils.isEmpty(password)){
             Toast.makeText(this,"Please enter password",Toast.LENGTH_LONG).show();
+            return;
+        //informs users that passwords must be at least 8 characters
+        } else if(!PASSWORD_PATTERN.matcher(password).matches()){
+            Toast.makeText(this,"Password must be at least 8 characters",Toast.LENGTH_LONG).show();
             return;
         }
 

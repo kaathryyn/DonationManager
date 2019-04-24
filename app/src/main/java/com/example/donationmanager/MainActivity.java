@@ -90,23 +90,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        //informs users that passwords must be at least 8 characters
+        //if the email and password are not empty
+        //displaying a progress dialog
+        progressDialog.setMessage("Registering Please Wait...");
+        progressDialog.show();
+
+        //checks & informs users that passwords must be at least 8 characters
         if(!PASSWORD_PATTERN.matcher(password).matches()){
             Toast.makeText(this,"Password must be at least 8 characters",Toast.LENGTH_LONG).show();
             return;
         }
 
-        //checks if an account already exists with that email address
+        //checks & informs user if an account already exists with that email address
         if(Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(this, "An account already exists. Please enter a new email address", Toast.LENGTH_LONG).show();
             return;
         }
-
-        //if the email and password are not empty
-        //displaying a progress dialog
-
-        progressDialog.setMessage("Registering Please Wait...");
-        progressDialog.show();
 
         //creating a new user
         firebaseAuth.createUserWithEmailAndPassword(email, password)

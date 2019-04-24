@@ -9,8 +9,18 @@
     </string-array>
     <string name="user_firstname">First Name</string>
     <string name="user_lastname">Last Name</string>
-    <string name="user_pnumber">eg. 0123456789</string>
+    <string name="user_pnumber">Phone Number</string>
     <string name="user_street">Address</string>
     <string name="user_city">City</string>
+    <string name="user_postcode">Postcode</string>
+    <string-array name="states">
+        <item>NSW</item>
+        <item>WA</item>
+        <item>SA</item>
+        <item>QLD</item>
+        <item>VIC</item>
+        <item>TAS</item>
+    </string-array>
+    <string name="state_label">State</string>
 
 </resources>

@@ -27,12 +27,17 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
         //Initialise and setup account selector spinner
-        Spinner  spinner = (Spinner) v.findViewById(R.id.accountTypeSpinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(v.getContext(),R.array.accountType,android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
+        Spinner  spinner1 = (Spinner) v.findViewById(R.id.accountTypeSpinner);
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(v.getContext(),R.array.accountType,android.R.layout.simple_spinner_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner1.setAdapter(adapter1);
+        spinner1.setOnItemSelectedListener(this);
 
+        Spinner  spinner2 = (Spinner) v.findViewById(R.id.stateTypeSpinner);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(v.getContext(),R.array.states,android.R.layout.simple_spinner_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner2.setAdapter(adapter2);
+        spinner2.setOnItemSelectedListener(this);
 
         return v;
 

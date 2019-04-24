@@ -83,18 +83,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Please enter email", Toast.LENGTH_LONG).show();
             return;
-        //checks if an account already exists with that email address
-        } else if(Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, "An account already exists. Please enter a new email address", Toast.LENGTH_LONG).show();
+        }
+
+        if(TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Please enter password", Toast.LENGTH_LONG).show();
             return;
         }
 
-        if(TextUtils.isEmpty(password)){
-            Toast.makeText(this,"Please enter password",Toast.LENGTH_LONG).show();
-            return;
         //informs users that passwords must be at least 8 characters
-        } else if(!PASSWORD_PATTERN.matcher(password).matches()){
+        if(!PASSWORD_PATTERN.matcher(password).matches()){
             Toast.makeText(this,"Password must be at least 8 characters",Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        //checks if an account already exists with that email address
+        if(Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "An account already exists. Please enter a new email address", Toast.LENGTH_LONG).show();
             return;
         }
 

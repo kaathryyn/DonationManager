@@ -79,8 +79,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
+        //checks & informs users that passwords must be at least 8 characters
+        if(!PASSWORD_PATTERN.matcher(password).matches()) {
+            Toast.makeText(this, "Password must be at least 8 characters", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         //checking if email and passwords are empty
-        if (TextUtils.isEmpty(email)) {
+        if(TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Please enter email", Toast.LENGTH_LONG).show();
             return;
         }
@@ -94,18 +100,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //displaying a progress dialog
         progressDialog.setMessage("Registering Please Wait...");
         progressDialog.show();
-
-        //checks & informs users that passwords must be at least 8 characters
-        if(!PASSWORD_PATTERN.matcher(password).matches()){
-            Toast.makeText(this,"Password must be at least 8 characters",Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        //checks & informs user if an account already exists with that email address
-        if(Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, "An account already exists. Please enter a new email address", Toast.LENGTH_LONG).show();
-            return;
-        }
 
         //creating a new user
         firebaseAuth.createUserWithEmailAndPassword(email, password)
@@ -121,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         }else{
                             //display fail message
-                            Toast.makeText(MainActivity.this,"Registration Error",Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this,"An account already exists. Please enter a different email adddress",Toast.LENGTH_LONG).show();
                         }
                         progressDialog.dismiss();
                     }

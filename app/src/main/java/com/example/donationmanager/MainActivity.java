@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
-        //checks & informs users that passwords must be at least 8 characters
+        //checks & informs user that password must be at least 8 characters
         if(!PASSWORD_PATTERN.matcher(password).matches()) {
             Toast.makeText(this, "Password must be at least 8 characters", Toast.LENGTH_LONG).show();
             return;
@@ -117,12 +117,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         }else{
                             //display fail message
-                            Toast.makeText(MainActivity.this,"An account already exists. Please enter a different email adddress",Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this,"Invalid email address",Toast.LENGTH_LONG).show();
                         }
                         progressDialog.dismiss();
                     }
                 });
-        //authenticating user with email address
+/*        //authenticating user with email address
         ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
                 // URL you want to redirect back to. The domain (www.example.com) for this
                 // URL must be whitelisted in the Firebase Console.
@@ -132,8 +132,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setIOSBundleId("com.example.ios")
                 .setAndroidPackageName(
                         "com.example.android",
-                        true, /* installIfNotAvailable */
-                        "12"    /* minimumVersion */)
+                        true, *//* installIfNotAvailable *//*
+                        "12"    *//* minimumVersion *//*)
                 .build();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Log.d(TAG, "Email sent.");
                         }
                     }
-                });
+                });*/
 
     }
 

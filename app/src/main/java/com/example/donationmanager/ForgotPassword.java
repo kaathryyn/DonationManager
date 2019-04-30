@@ -54,6 +54,7 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(ForgotPassword.this, "Check Email", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 } else {
                     Toast.makeText(ForgotPassword.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                 }

@@ -27,7 +27,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,8 +68,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        if(TextUtils.isEmpty(password)){
-            Toast.makeText(this,"Please enter password",Toast.LENGTH_LONG).show();
+        if(TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Please enter password", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -89,6 +88,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     //start app
                     finish();
                     startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+                } else {
+                    //display fail message
+                    Toast.makeText(LoginActivity.this,"Incorrect email address or password. Please try again.",Toast.LENGTH_LONG).show();
                 }
             }
         });

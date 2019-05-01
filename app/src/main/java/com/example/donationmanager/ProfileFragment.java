@@ -4,27 +4,53 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 
 import java.util.ArrayList;
 
-public class ProfileFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+
+
+public class ProfileFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+
+    private EditText editFirstName, editLastName, editAddress, editCity, editPostcode, editState, editPhoneNumber;
+    private Button buttonSave;
+    private String accountType;
+    //initialise db reference
+    private DatabaseReference databaseReference;
+    private FirebaseAuth firebaseAuth;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        DatabaseReference databaseReference;
-
-
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
+
+
+
+        //initialise user information fields
+        buttonSave = (Button) v.findViewById(R.id.btnSave);
+        buttonSave.setOnClickListener(this);
+        editFirstName = (EditText) v.findViewById(R.id.editFirstName);
+        editLastName = (EditText) v.findViewById(R.id.editLastName);
+        editAddress = (EditText) v.findViewById(R.id.editAddress);
+
 
         //Initialise and setup account selector spinner
         Spinner  spinner1 = (Spinner) v.findViewById(R.id.accountTypeSpinner);
@@ -39,10 +65,29 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         spinner2.setAdapter(adapter2);
         spinner2.setOnItemSelectedListener(this);
 
+        accountType = spinner1.getSelectedItem().toString();
+
+
         return v;
 
 
 
+
+    }
+
+    private void saveUserInfo() {
+        String firstName = editFirstName.getText().toString().trim();
+        String lastName = editLastName.getText().toString().trim();
+        String address = editAddress.getText().toString().trim();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        UserInformation userInformation = new UserInformation(firstName, lastName, address, accountType);
+
+
+        databaseReference.child(user.getUid()).setValue(userInformation);
+        Toast.makeText(getContext(), "saved", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -54,5 +99,27 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        if(v == buttonSave) {
+            saveUserInfo();
+            
+            Fragment fragment = null;
+            fragment = new BookingFragment();
+            replaceFragment(fragment);
+            
+            
+        }
+
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

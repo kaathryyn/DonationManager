@@ -13,4 +13,6 @@ public class UserInformation {
         this.address = address;
         this.accountType = accountType;
     }
+
+    public UserInformation() {}
 }

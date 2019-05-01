@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,7 +106,20 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
         if(v == buttonSave) {
             saveUserInfo();
+            
+            Fragment fragment = null;
+            fragment = new BookingFragment();
+            replaceFragment(fragment);
+            
+            
         }
 
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

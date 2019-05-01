@@ -32,8 +32,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     private Button buttonSave;
     private String accountType;
     //initialise db reference
-    DatabaseReference databaseReference;
-    FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
+    private FirebaseAuth firebaseAuth;
 
     @Nullable
     @Override
@@ -42,7 +42,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         //initialise user information fields
         buttonSave = (Button) v.findViewById(R.id.btnSave);
@@ -79,11 +78,13 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         String firstName = editFirstName.getText().toString().trim();
         String lastName = editLastName.getText().toString().trim();
         String address = editAddress.getText().toString().trim();
-
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
 
         UserInformation userInformation = new UserInformation(firstName, lastName, address, accountType);
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+
         databaseReference.child(user.getUid()).setValue(userInformation);
         Toast.makeText(getContext(), "saved", Toast.LENGTH_SHORT).show();
     }

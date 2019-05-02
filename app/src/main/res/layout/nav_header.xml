@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="210dp"
+    android:layout_height="wrap_content"
     android:background="@color/colorAccent"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="15dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
 
@@ -19,15 +19,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="NAME"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:textColor="#FFFF"
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/textViewUserEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:text="email@placeholder.com" />
+        android:textColor="#FFFF"
+        android:text="email@placeholder.com"
+        android:textSize="15dp"/>
 
     <Button
         android:id="@+id/buttonLogout"
@@ -35,6 +37,6 @@
         android:layout_height="50dp"
         android:layout_gravity="left"
         android:layout_marginTop="10dp"
-        android:text="Logout" />
+        android:text="Logout"/>
 
 </LinearLayout>

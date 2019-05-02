@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPassword extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView title_tv, email_tv, cancel_tv;
+    private TextView cancel_tv;
     private Button reset_password_btn;
     private EditText email_txt;
 
@@ -28,8 +28,6 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
-        title_tv = (TextView) findViewById(R.id.title_tv);
-        email_tv = (TextView) findViewById(R.id.email_tv);
         cancel_tv = (TextView) findViewById(R.id.cancel_tv);
         reset_password_btn = (Button) findViewById(R.id.reset_password_btn);
         email_txt = (EditText) findViewById(R.id.email_txt);

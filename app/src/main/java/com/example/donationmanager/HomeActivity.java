@@ -51,23 +51,24 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-
         //initialise firebase object
         firebaseAuth = FirebaseAuth.getInstance();
 
+        //User ID of logged in user
+        String uid = firebaseAuth.getCurrentUser().getUid();
 
-
-
-
-
-        //Name testing firebase
-        firebaseDatabase = FirebaseDatabase.getInstance().getReference().child(firebaseAuth.getCurrentUser().getUid()).child("firstName");
+        //reference childs info using User ID
+        firebaseDatabase = FirebaseDatabase.getInstance().getReference().child(uid);
 
         firebaseDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String name = dataSnapshot.getValue().toString();
-                textViewName.setText(name);
+                //check if user has made a profile
+                if (dataSnapshot.exists()) {
+                    String firstName = dataSnapshot.child("firstName").getValue().toString();
+                    String lastName = dataSnapshot.child("lastName").getValue().toString();
+                    textViewName.setText(firstName + " " + lastName);
+                }
             }
 
             @Override
@@ -77,11 +78,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
 
 
-
-
-
-
-        checkUserlogin();
+        checkUserLogin();
 
         //get current user
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -132,7 +129,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    public void checkUserlogin() {
+    public void checkUserLogin() {
         if (firebaseAuth.getCurrentUser() == null) {
             //close activity
             finish();

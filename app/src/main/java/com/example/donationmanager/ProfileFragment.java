@@ -25,16 +25,18 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+import static android.view.View.INVISIBLE;
 
 
 public class ProfileFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
-    private EditText editFirstName, editLastName, editAddress, editCity, editPostcode, editState, editPhoneNumber;
+    private EditText editCharityName, editFirstName, editLastName, editAddress, editCity, editPostcode, editState, editPhoneNumber;
     private Button buttonSave;
     private String accountType;
     //initialise db reference
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
+    int accountPosition;
 
     @Nullable
     @Override
@@ -50,6 +52,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         editFirstName = (EditText) v.findViewById(R.id.editFirstName);
         editLastName = (EditText) v.findViewById(R.id.editLastName);
         editAddress = (EditText) v.findViewById(R.id.editAddress);
+        editCharityName = (EditText) v.findViewById(R.id.editCharityName);
 
 
         //Initialise and setup account selector spinner
@@ -59,13 +62,28 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         spinner1.setAdapter(adapter1);
         spinner1.setOnItemSelectedListener(this);
 
+        accountType = spinner1.getSelectedItem().toString();
+
+
+
         Spinner  spinner2 = (Spinner) v.findViewById(R.id.stateTypeSpinner);
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(v.getContext(),R.array.states,android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(adapter2);
         spinner2.setOnItemSelectedListener(this);
+        accountPosition = spinner1.getSelectedItemPosition() +1;
 
-        accountType = spinner1.getSelectedItem().toString();
+        if(spinner1.getSelectedItemPosition() + 1 == 1) {
+            editCharityName.setVisibility(View.GONE);
+        }
+
+
+        else {
+            editFirstName.setVisibility(v.GONE);
+            editLastName.setVisibility(v.GONE);
+
+        }
+
 
 
         return v;
@@ -92,6 +110,19 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        if(parent.getSelectedItemPosition() == 0) {
+            editCharityName.setVisibility(View.GONE);
+            editFirstName.setVisibility(View.VISIBLE);
+            editLastName.setVisibility(View.VISIBLE);
+        }
+
+        else if (parent.getSelectedItemPosition() == 1) {
+            editFirstName.setVisibility(View.GONE);
+            editLastName.setVisibility(View.GONE);
+            editCharityName.setVisibility(View.VISIBLE);
+        }
+
         String text = parent.getItemAtPosition(position).toString();
         Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
     }

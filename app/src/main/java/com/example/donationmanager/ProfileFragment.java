@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -23,6 +24,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import static android.view.View.INVISIBLE;
@@ -31,8 +34,11 @@ import static android.view.View.INVISIBLE;
 public class ProfileFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private EditText editCharityName, editFirstName, editLastName, editAddress, editCity, editPostcode, editState, editPhoneNumber;
+    private int openHour, closeHour;
+    private boolean mon, tue, wed, thu, fri, sat, sun;
     private Button buttonSave;
     private String accountType;
+    private TextView tvOpenHours, tvCloseHours, tvOpenDays;
     //initialise db reference
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
@@ -47,13 +53,16 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
 
         //initialise user information fields
+        tvOpenHours = (TextView) v.findViewById(R.id.tvOpenHours);
+        tvCloseHours = (TextView) v.findViewById(R.id.tvCloseHours);
+        tvOpenDays = (TextView) v.findViewById(R.id.tvDays);
+
         buttonSave = (Button) v.findViewById(R.id.btnSave);
         buttonSave.setOnClickListener(this);
         editFirstName = (EditText) v.findViewById(R.id.editFirstName);
         editLastName = (EditText) v.findViewById(R.id.editLastName);
         editAddress = (EditText) v.findViewById(R.id.editAddress);
         editCharityName = (EditText) v.findViewById(R.id.editCharityName);
-
 
         //Initialise and setup account selector spinner
         Spinner  spinner1 = (Spinner) v.findViewById(R.id.accountTypeSpinner);
@@ -65,19 +74,26 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         accountType = spinner1.getSelectedItem().toString();
 
 
-
+        //initialise and setup state spinner
         Spinner  spinner2 = (Spinner) v.findViewById(R.id.stateTypeSpinner);
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(v.getContext(),R.array.states,android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(adapter2);
         spinner2.setOnItemSelectedListener(this);
-        accountPosition = spinner1.getSelectedItemPosition() +1;
 
+
+
+        //hide or show fields based on account type
+        accountPosition = spinner1.getSelectedItemPosition() +1;
         if(spinner1.getSelectedItemPosition() + 1 == 1) {
             editCharityName.setVisibility(View.GONE);
+            tvOpenDays.setVisibility(View.GONE);
+            tvCloseHours.setVisibility(View.GONE);
+            tvOpenHours.setVisibility(View.GONE);
+
+
+
         }
-
-
         else {
             editFirstName.setVisibility(v.GONE);
             editLastName.setVisibility(v.GONE);
@@ -93,6 +109,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
     }
 
+
+
     private void saveUserInfo() {
         String firstName = editFirstName.getText().toString().trim();
         String lastName = editLastName.getText().toString().trim();
@@ -100,11 +118,12 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         databaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
+        String uId = user.getUid();
 
-        UserInformation userInformation = new UserInformation(firstName, lastName, address, accountType);
+        DonorInformation donorInformation = new DonorInformation(firstName, lastName, address, accountType, uId);
 
 
-        databaseReference.child(user.getUid()).setValue(userInformation);
+        databaseReference.child("donors").push().setValue(donorInformation);
         Toast.makeText(getContext(), "saved", Toast.LENGTH_SHORT).show();
     }
 
@@ -144,6 +163,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             
             
         }
+
+
 
     }
 

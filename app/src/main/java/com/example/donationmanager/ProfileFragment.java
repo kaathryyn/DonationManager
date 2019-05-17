@@ -121,13 +121,13 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             tvOpenHours.setVisibility(View.GONE);
             spinner4.setVisibility(View.GONE);
             spinner3.setVisibility(View.GONE);
-            mon.setVisibility(View.GONE);
-            tue.setVisibility(View.GONE);
-            wed.setVisibility(View.GONE);
-            thu.setVisibility(View.GONE);
-            fri.setVisibility(View.GONE);
-            sat.setVisibility(View.GONE);
-            sun.setVisibility(View.GONE);
+            mon.setVisibility(View.INVISIBLE);
+            tue.setVisibility(View.INVISIBLE);
+            wed.setVisibility(View.INVISIBLE);
+            thu.setVisibility(View.INVISIBLE);
+            fri.setVisibility(View.INVISIBLE);
+            sat.setVisibility(View.INVISIBLE);
+            sun.setVisibility(View.INVISIBLE);
 
 
 
@@ -183,15 +183,15 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             tvOpenDays.setVisibility(View.VISIBLE);
             tvCloseHours.setVisibility(View.VISIBLE);
             tvOpenHours.setVisibility(View.VISIBLE);
-            spinner4.setVisibility(View.GONE);
-            spinner3.setVisibility(View.GONE);
-            mon.setVisibility(View.GONE);
-            tue.setVisibility(View.GONE);
-            wed.setVisibility(View.GONE);
-            thu.setVisibility(View.GONE);
-            fri.setVisibility(View.GONE);
-            sat.setVisibility(View.GONE);
-            sun.setVisibility(View.GONE);
+            mon.setVisibility(View.VISIBLE);
+            tue.setVisibility(View.VISIBLE);
+            wed.setVisibility(View.VISIBLE);
+            thu.setVisibility(View.VISIBLE);
+            fri.setVisibility(View.VISIBLE);
+            sat.setVisibility(View.VISIBLE);
+            sun.setVisibility(View.VISIBLE);
+
+
 
         }
 

@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@color/colorBackground"
-    >
+    android:background="@android:color/darker_gray"
+    tools:context=".MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -17,7 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorAccent"
+            android:background="@color/colorPrimaryDark"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
@@ -25,8 +24,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_marginTop="55dp"
+        android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="10dp">
@@ -39,13 +37,14 @@
 
 
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
             android:text="Furniture Connect"
             android:fontFamily="sans-serif-smallcaps"
-            android:textSize="30dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/colorPrimaryDark" />
 
         <android.support.design.widget.TextInputLayout
@@ -100,7 +99,7 @@
             android:layout_height="match_parent"
             android:text="Already have an account? Login"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimaryDark"/>
+            android:textColor="@color/colorPrimaryDark" />
 
     </LinearLayout>
 

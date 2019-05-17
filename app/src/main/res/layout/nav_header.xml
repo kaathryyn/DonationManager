@@ -1,35 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="210dp"
     android:background="@color/colorAccent"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:padding="15dp"
+    android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher_foreground" />
+        android:src="@mipmap/ic_launcher_round" />
 
     <TextView
         android:id="@+id/textViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="NAME"
-        android:textColor="#FFFF"
-        android:textSize="20dp"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/textViewUserEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:textColor="#FFFF"
-        android:text="email@placeholder.com"
-        android:textSize="15dp"/>
+        android:text="email@placeholder.com" />
 
     <Button
         android:id="@+id/buttonLogout"
@@ -37,6 +33,6 @@
         android:layout_height="50dp"
         android:layout_gravity="left"
         android:layout_marginTop="10dp"
-        android:text="Logout"/>
+        android:text="Logout" />
 
 </LinearLayout>

@@ -183,13 +183,16 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             tvOpenDays.setVisibility(View.VISIBLE);
             tvCloseHours.setVisibility(View.VISIBLE);
             tvOpenHours.setVisibility(View.VISIBLE);
-            mon.setVisibility(View.VISIBLE);
+            /*mon.setVisibility(View.VISIBLE);
             tue.setVisibility(View.VISIBLE);
             wed.setVisibility(View.VISIBLE);
             thu.setVisibility(View.VISIBLE);
             fri.setVisibility(View.VISIBLE);
             sat.setVisibility(View.VISIBLE);
             sun.setVisibility(View.VISIBLE);
+            spinner4.setVisibility(View.GONE);
+            spinner3.setVisibility(View.GONE);
+            */
 
 
 

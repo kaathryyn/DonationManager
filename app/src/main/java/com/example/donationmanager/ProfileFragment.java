@@ -141,44 +141,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         }
 
 
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            if(parent.getSelectedItemPosition() == 0) {
-                editCharityName.setVisibility(View.GONE);
-                editFirstName.setVisibility(View.VISIBLE);
-                editLastName.setVisibility(View.VISIBLE);
-            }
-
-            else if (parent.getSelectedItemPosition() == 1) {
-                editFirstName.setVisibility(View.GONE);
-                editLastName.setVisibility(View.GONE);
-                editCharityName.setVisibility(View.VISIBLE);
-                tvOpenDays.setVisibility(View.VISIBLE);
-                tvCloseHours.setVisibility(View.VISIBLE);
-                tvOpenHours.setVisibility(View.VISIBLE);
-                spinner4.setVisibility(View.GONE);
-                spinner3.setVisibility(View.GONE);
-                mon.setVisibility(View.GONE);
-                tue.setVisibility(View.GONE);
-                wed.setVisibility(View.GONE);
-                thu.setVisibility(View.GONE);
-                fri.setVisibility(View.GONE);
-                sat.setVisibility(View.GONE);
-                sun.setVisibility(View.GONE);
-
-            }
-
-            String text = parent.getItemAtPosition(position).toString();
-            Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-
-
 
         return v;
 
@@ -205,7 +167,42 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         Toast.makeText(getContext(), "saved", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+        if(parent.getSelectedItemPosition() == 0) {
+            editCharityName.setVisibility(View.GONE);
+            editFirstName.setVisibility(View.VISIBLE);
+            editLastName.setVisibility(View.VISIBLE);
+        }
+
+        else if (parent.getSelectedItemPosition() == 1) {
+            editFirstName.setVisibility(View.GONE);
+            editLastName.setVisibility(View.GONE);
+            editCharityName.setVisibility(View.VISIBLE);
+            tvOpenDays.setVisibility(View.VISIBLE);
+            tvCloseHours.setVisibility(View.VISIBLE);
+            tvOpenHours.setVisibility(View.VISIBLE);
+            spinner4.setVisibility(View.GONE);
+            spinner3.setVisibility(View.GONE);
+            mon.setVisibility(View.GONE);
+            tue.setVisibility(View.GONE);
+            wed.setVisibility(View.GONE);
+            thu.setVisibility(View.GONE);
+            fri.setVisibility(View.GONE);
+            sat.setVisibility(View.GONE);
+            sun.setVisibility(View.GONE);
+
+        }
+
+        String text = parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 
     @Override
     public void onClick(View v) {

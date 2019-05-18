@@ -44,29 +44,33 @@
 
     <EditText
         android:id="@+id/editAddress"
-        android:layout_width="wrap_content"
+        android:layout_width="379dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:ems="10"
         android:hint="@string/user_street"
         android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editFirstName" />
+        app:layout_constraintTop_toBottomOf="@+id/editLastName" />
 
     <EditText
         android:id="@+id/editCity"
-        android:layout_width="100dp"
+        android:layout_width="197dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="8dp"
         android:ems="10"
         android:hint="@string/user_city"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editLastName" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editAddress" />
 
     <Spinner
         android:id="@+id/stateTypeSpinner"
@@ -74,27 +78,30 @@
         android:layout_height="26dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/editUserPhone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/editPostcode"
-        app:layout_constraintTop_toBottomOf="@+id/editCity" />
+        app:layout_constraintTop_toBottomOf="@+id/editAddress" />
 
     <EditText
         android:id="@+id/editUserPhone"
-        android:layout_width="wrap_content"
+        android:layout_width="379dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:ems="10"
         android:hint="@string/user_pnumber"
         android:inputType="phone"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editPostcode" />
+        app:layout_constraintTop_toBottomOf="@+id/editCity" />
 
     <Button
         android:id="@+id/btnSave"
@@ -102,14 +109,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="80dp"
         android:text="Save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editUserPhone" />
 
     <EditText
         android:id="@+id/editCharityName"
-        android:layout_width="wrap_content"
+        android:layout_width="188dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
@@ -122,30 +129,32 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/openHourSpinner" />
-
     <EditText
         android:id="@+id/editFirstName"
-        android:layout_width="150dp"
+        android:layout_width="188dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:ems="10"
         android:hint="@string/user_firstname"
         android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/editLastName"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editCharityName" />
 
 
+
     <EditText
         android:id="@+id/editLastName"
-        android:layout_width="150dp"
+        android:layout_width="188dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="16dp"
         android:ems="10"
         android:hint="@string/user_lastname"
         android:inputType="textPersonName"
@@ -154,15 +163,15 @@
 
     <EditText
         android:id="@+id/editPostcode"
-        android:layout_width="90dp"
+        android:layout_width="87dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/user_postcode"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editCity"
         app:layout_constraintTop_toBottomOf="@+id/editAddress" />
 
     <TextView
@@ -172,12 +181,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:text="@string/state_label"
-        app:layout_constraintBottom_toTopOf="@+id/editUserPhone"
-        app:layout_constraintEnd_toStartOf="@+id/stateTypeSpinner"
+        app:layout_constraintBottom_toTopOf="@+id/stateTypeSpinner"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/editPostcode"
         app:layout_constraintTop_toBottomOf="@+id/editAddress" />
 
@@ -254,9 +262,8 @@
         android:id="@+id/checkbox_monday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:text="Mon"
+        app:layout_constraintEnd_toStartOf="@+id/checkbox_tuesday"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDays" />
 
@@ -264,63 +271,61 @@
         android:id="@+id/checkbox_tuesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
         android:text="Tue"
+        app:layout_constraintEnd_toStartOf="@+id/checkbox_wednesday"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkbox_monday" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDays" />
 
     <CheckBox
         android:id="@+id/checkbox_wednesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:text="Wed"
-        app:layout_constraintStart_toEndOf="@+id/checkbox_monday"
+        app:layout_constraintEnd_toStartOf="@+id/checkbox_thursday"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDays" />
 
     <CheckBox
         android:id="@+id/checkbox_thursday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="8dp"
         android:text="Thu"
-        app:layout_constraintStart_toEndOf="@+id/checkbox_tuesday"
-        app:layout_constraintTop_toBottomOf="@+id/checkbox_wednesday" />
+        app:layout_constraintEnd_toStartOf="@+id/checkbox_friday"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDays" />
 
     <CheckBox
         android:id="@+id/checkbox_friday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
         android:text="Fri"
-        app:layout_constraintStart_toEndOf="@+id/checkbox_wednesday"
+        app:layout_constraintEnd_toStartOf="@+id/checkbox_saturday"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDays" />
 
     <CheckBox
         android:id="@+id/checkbox_saturday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
         android:text="Sat"
-        app:layout_constraintStart_toEndOf="@+id/checkbox_thursday"
-        app:layout_constraintTop_toBottomOf="@+id/checkbox_friday" />
+        app:layout_constraintEnd_toStartOf="@+id/checkbox_sunday"
+        app:layout_constraintHorizontal_bias="0.987"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDays" />
 
     <CheckBox
         android:id="@+id/checkbox_sunday"
-        android:layout_width="62dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text="Sun"
-        app:layout_constraintStart_toEndOf="@+id/checkbox_friday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="340dp"
+        android:text="S"
+        app:layout_constraintEnd_toEndOf="@+id/checkbox_saturday"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDays" />
 
 

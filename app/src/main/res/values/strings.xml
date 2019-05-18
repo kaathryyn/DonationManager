@@ -51,5 +51,9 @@
     </string-array>
 
     <string name="state_label">State</string>
+    <string-array name="donationType">
+        <item>Pick Up</item>
+        <item>Drop Off</item>
+    </string-array>
 
 </resources>

@@ -65,9 +65,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //check if user has made a profile
                 if (dataSnapshot.exists()) {
-                    String firstName = dataSnapshot.child("firstName").getValue().toString();
-                    String lastName = dataSnapshot.child("lastName").getValue().toString();
-                    textViewName.setText(firstName + " " + lastName);
+                    if(dataSnapshot.child("accountType").getValue() == "Donor") {
+                        String firstName = dataSnapshot.child("firstName").getValue().toString();
+                        String lastName = dataSnapshot.child("lastName").getValue().toString();
+                        textViewName.setText(firstName + " " + lastName);
+                    }
+
+                    else if (dataSnapshot.child("accountType").getValue() == "Charity") {
+
+                        textViewName.setText(dataSnapshot.child("charityName").getValue().toString());
+                    }
                 }
             }
 

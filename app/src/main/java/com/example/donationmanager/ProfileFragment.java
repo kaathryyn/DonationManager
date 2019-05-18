@@ -162,7 +162,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         DonorInformation donorInformation = new DonorInformation(firstName, lastName, address,city, postcode, state, phoneNumber, accountType, uId, true);
 
 
-        databaseReference.child("users").push().setValue(donorInformation);
+        databaseReference.child("users").child(uId).setValue(donorInformation);
         Toast.makeText(getContext(), "Donor info saved", Toast.LENGTH_SHORT).show();
     }
 
@@ -195,7 +195,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         CharityInformation charityInformation = new CharityInformation(charityName, address, city, postcode, state, phoneNumber, accountType, uId, openingHour, closingHour, mondayOpen, tuesdayOpen, wednesdayOpen, thursdayOpen, fridayOpen, saturdayOpen, sundayOpen, true);
 
 
-        databaseReference.child("users").push().setValue(charityInformation);
+        databaseReference.child("users").child(uId).setValue(charityInformation);
         Toast.makeText(getContext(), "Charity information saved", Toast.LENGTH_SHORT).show();
     }
 

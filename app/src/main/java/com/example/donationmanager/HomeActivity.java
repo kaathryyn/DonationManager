@@ -58,16 +58,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         String uid = firebaseAuth.getCurrentUser().getUid();
 
         //reference childs info using User ID
-        firebaseDatabase = FirebaseDatabase.getInstance().getReference().child(uid);
+        firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
 
         firebaseDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //check if user has made a profile
                 if (dataSnapshot.exists()) {
-                    String firstName = dataSnapshot.child("firstName").getValue().toString();
-                    String lastName = dataSnapshot.child("lastName").getValue().toString();
-                    textViewName.setText(firstName + " " + lastName);
+                    if(dataSnapshot.child("accountType").getValue() == "Donor") {
+                        String firstName = dataSnapshot.child("firstName").getValue().toString();
+                        String lastName = dataSnapshot.child("lastName").getValue().toString();
+                        textViewName.setText(firstName + " " + lastName);
+                    }
+
+                    else if (dataSnapshot.child("accountType").getValue() == "Charity") {
+
+                        textViewName.setText(dataSnapshot.child("charityName").getValue().toString());
+                    }
                 }
             }
 

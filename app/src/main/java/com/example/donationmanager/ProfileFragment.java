@@ -35,7 +35,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
     private EditText editCharityName, editFirstName, editLastName, editAddress, editCity, editPostcode, editState, editPhoneNumber;
     private int openHour, closeHour;
-    private CheckBox mon, tue, wed, thu, fri, sat, sun;
+    public CheckBox mon, tue, wed, thu, fri, sat, sun;
     private Button buttonSave;
     private String accountType;
     private TextView tvOpenHours, tvCloseHours, tvOpenDays;
@@ -71,7 +71,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         spinner1.setAdapter(adapter1);
         spinner1.setOnItemSelectedListener(this);
 
-        //initialise days checkboes
+        //initialise days checkboxes
 
         CheckBox mon = (CheckBox) v.findViewById(R.id.checkbox_monday);
         CheckBox tue = (CheckBox) v.findViewById(R.id.checkbox_tuesday);
@@ -121,7 +121,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             tvOpenHours.setVisibility(View.GONE);
             spinner4.setVisibility(View.GONE);
             spinner3.setVisibility(View.GONE);
-            mon.setVisibility(View.INVISIBLE);
+            mon.setVisibility(View.GONE);
             tue.setVisibility(View.INVISIBLE);
             wed.setVisibility(View.INVISIBLE);
             thu.setVisibility(View.INVISIBLE);
@@ -183,16 +183,17 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             tvOpenDays.setVisibility(View.VISIBLE);
             tvCloseHours.setVisibility(View.VISIBLE);
             tvOpenHours.setVisibility(View.VISIBLE);
-            /*mon.setVisibility(View.VISIBLE);
-            tue.setVisibility(View.VISIBLE);
-            wed.setVisibility(View.VISIBLE);
-            thu.setVisibility(View.VISIBLE);
-            fri.setVisibility(View.VISIBLE);
-            sat.setVisibility(View.VISIBLE);
-            sun.setVisibility(View.VISIBLE);
-            spinner4.setVisibility(View.GONE);
-            spinner3.setVisibility(View.GONE);
-            */
+
+            mon.setVisibility(getView().VISIBLE);
+            //tue.setVisibility(View.VISIBLE);
+            //wed.setVisibility(View.VISIBLE);
+            //thu.setVisibility(View.VISIBLE);
+            //fri.setVisibility(View.VISIBLE);
+            //sat.setVisibility(View.VISIBLE);
+            //sun.setVisibility(View.VISIBLE);
+            //spinner4.setVisibility(View.GONE);
+            //spinner3.setVisibility(View.GONE);
+
 
 
 

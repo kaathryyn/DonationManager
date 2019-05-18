@@ -64,6 +64,9 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         editLastName = (EditText) v.findViewById(R.id.editLastName);
         editAddress = (EditText) v.findViewById(R.id.editAddress);
         editCharityName = (EditText) v.findViewById(R.id.editCharityName);
+        editCity = (EditText) v.findViewById(R.id.editCity);
+        editPostcode = (EditText) v.findViewById(R.id.editPostcode);
+        editPhoneNumber = (EditText) v.findViewById(R.id.editUserPhone);
 
         //Initialise and setup account selector spinner
         spinner1 = (Spinner) v.findViewById(R.id.accountTypeSpinner);
@@ -161,7 +164,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
 
         databaseReference.child("donors").push().setValue(donorInformation);
-        Toast.makeText(getContext(), "saved", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Donor info saved", Toast.LENGTH_SHORT).show();
     }
 
     private void saveCharityInfo() {
@@ -261,7 +264,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                 saveUserInfo();
             }
             else if(spinner1.getSelectedItemPosition() == 1) {
-
+                saveCharityInfo();
             }
             
             Fragment fragment = null;

@@ -35,7 +35,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
     private EditText editCharityName, editFirstName, editLastName, editAddress, editCity, editPostcode, editState, editPhoneNumber;
     private int openHour, closeHour;
-    public CheckBox mon, tue, wed, thu, fri, sat, sun;
+    private CheckBox mon, tue, wed, thu, fri, sat, sun;
     private Button buttonSave;
     private String accountType;
     private TextView tvOpenHours, tvCloseHours, tvOpenDays;
@@ -73,13 +73,13 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
         //initialise days checkboxes
 
-        CheckBox mon = (CheckBox) v.findViewById(R.id.checkbox_monday);
-        CheckBox tue = (CheckBox) v.findViewById(R.id.checkbox_tuesday);
-        CheckBox wed = (CheckBox) v.findViewById(R.id.checkbox_wednesday);
-        CheckBox thu = (CheckBox) v.findViewById(R.id.checkbox_thursday);
-        CheckBox fri = (CheckBox) v.findViewById(R.id.checkbox_friday);
-        CheckBox sat = (CheckBox) v.findViewById(R.id.checkbox_saturday);
-        CheckBox sun = (CheckBox) v.findViewById(R.id.checkbox_sunday);
+        mon = (CheckBox) v.findViewById(R.id.checkbox_monday);
+        tue = (CheckBox) v.findViewById(R.id.checkbox_tuesday);
+        wed = (CheckBox) v.findViewById(R.id.checkbox_wednesday);
+        thu = (CheckBox) v.findViewById(R.id.checkbox_thursday);
+        fri = (CheckBox) v.findViewById(R.id.checkbox_friday);
+        sat = (CheckBox) v.findViewById(R.id.checkbox_saturday);
+        sun = (CheckBox) v.findViewById(R.id.checkbox_sunday);
 
 
         accountType = spinner1.getSelectedItem().toString();
@@ -121,7 +121,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             tvOpenHours.setVisibility(View.GONE);
             spinner4.setVisibility(View.GONE);
             spinner3.setVisibility(View.GONE);
-            mon.setVisibility(View.GONE);
+            mon.setVisibility(View.INVISIBLE);
             tue.setVisibility(View.INVISIBLE);
             wed.setVisibility(View.INVISIBLE);
             thu.setVisibility(View.INVISIBLE);
@@ -137,7 +137,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         else {
             editFirstName.setVisibility(v.GONE);
             editLastName.setVisibility(v.GONE);
-
         }
 
 
@@ -170,6 +169,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+
+
         if(parent.getSelectedItemPosition() == 0) {
             editCharityName.setVisibility(View.GONE);
             editFirstName.setVisibility(View.VISIBLE);
@@ -183,8 +184,15 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             tvOpenDays.setVisibility(View.VISIBLE);
             tvCloseHours.setVisibility(View.VISIBLE);
             tvOpenHours.setVisibility(View.VISIBLE);
-
             mon.setVisibility(getView().VISIBLE);
+            tue.setVisibility(getView().VISIBLE);
+            wed.setVisibility(getView().VISIBLE);
+            thu.setVisibility(getView().VISIBLE);
+            fri.setVisibility(getView().VISIBLE);
+            sat.setVisibility(getView().VISIBLE);
+            sun.setVisibility(getView().VISIBLE);
+
+
             //tue.setVisibility(View.VISIBLE);
             //wed.setVisibility(View.VISIBLE);
             //thu.setVisibility(View.VISIBLE);

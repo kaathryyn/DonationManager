@@ -43,6 +43,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
     int accountPosition;
+    Spinner spinner1, spinner2, spinner3, spinner4;
 
     @Nullable
     @Override
@@ -65,7 +66,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         editCharityName = (EditText) v.findViewById(R.id.editCharityName);
 
         //Initialise and setup account selector spinner
-        Spinner  spinner1 = (Spinner) v.findViewById(R.id.accountTypeSpinner);
+        spinner1 = (Spinner) v.findViewById(R.id.accountTypeSpinner);
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(v.getContext(),R.array.accountType,android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner1.setAdapter(adapter1);
@@ -82,11 +83,12 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         sun = (CheckBox) v.findViewById(R.id.checkbox_sunday);
 
 
+        //type of account being created
         accountType = spinner1.getSelectedItem().toString();
 
 
         //initialise and setup state spinner
-        Spinner  spinner2 = (Spinner) v.findViewById(R.id.stateTypeSpinner);
+        spinner2 = (Spinner) v.findViewById(R.id.stateTypeSpinner);
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(v.getContext(),R.array.states,android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(adapter2);
@@ -94,7 +96,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
         //initialise opening hours spinner
 
-        Spinner  spinner3 = (Spinner) v.findViewById(R.id.openHourSpinner);
+        spinner3 = (Spinner) v.findViewById(R.id.openHourSpinner);
         ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(v.getContext(),R.array.hours,android.R.layout.simple_spinner_item);
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner3.setAdapter(adapter3);
@@ -102,7 +104,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
         //initialise closing hours spinner
 
-        Spinner  spinner4 = (Spinner) v.findViewById(R.id.closeHourSpinner);
+        spinner4 = (Spinner) v.findViewById(R.id.closeHourSpinner);
         ArrayAdapter<CharSequence> adapter4 = ArrayAdapter.createFromResource(v.getContext(),R.array.hours,android.R.layout.simple_spinner_item);
         adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner4.setAdapter(adapter3);
@@ -138,32 +140,60 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             editFirstName.setVisibility(v.GONE);
             editLastName.setVisibility(v.GONE);
         }
-
-
-
         return v;
 
-
-
-
     }
-
-
 
     private void saveUserInfo() {
         String firstName = editFirstName.getText().toString().trim();
         String lastName = editLastName.getText().toString().trim();
         String address = editAddress.getText().toString().trim();
+        String city = editCity.getText().toString().trim();
+        String postcode = editPostcode.getText().toString().trim();
+        String state = spinner2.getSelectedItem().toString();
+        String phoneNumber = editPhoneNumber.getText().toString().trim();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
         String uId = user.getUid();
 
-        DonorInformation donorInformation = new DonorInformation(firstName, lastName, address, accountType, uId);
+        DonorInformation donorInformation = new DonorInformation(firstName, lastName, address,city, postcode, state, phoneNumber, accountType, uId, true);
 
 
         databaseReference.child("donors").push().setValue(donorInformation);
         Toast.makeText(getContext(), "saved", Toast.LENGTH_SHORT).show();
+    }
+
+    private void saveCharityInfo() {
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        String charityName = editCharityName.getText().toString().trim();
+        String address = editAddress.getText().toString().trim();
+        String city = editCity.getText().toString().trim();
+        String postcode = editPostcode.getText().toString().trim();
+        String state = spinner2.getSelectedItem().toString();
+        String phoneNumber = editPhoneNumber.getText().toString().trim();
+        String uId = user.getUid();
+        int openingHour = Integer.parseInt(spinner3.getSelectedItem().toString());
+        int closingHour = Integer.parseInt(spinner4.getSelectedItem().toString());
+        boolean mondayOpen = mon.isSelected();
+        boolean tuesdayOpen = tue.isSelected();
+        boolean wednesdayOpen = wed.isSelected();
+        boolean thursdayOpen = thu.isSelected();
+        boolean fridayOpen = fri.isSelected();;
+        boolean saturdayOpen = sat.isSelected();
+        boolean sundayOpen =  sun.isSelected();
+
+
+
+        CharityInformation charityInformation = new CharityInformation(charityName, address, city, postcode, state, phoneNumber, accountType, uId, openingHour, closingHour, mondayOpen, tuesdayOpen, wednesdayOpen, thursdayOpen, fridayOpen, saturdayOpen, sundayOpen, true);
+
+
+        databaseReference.child("charity").push().setValue(charityInformation);
+        Toast.makeText(getContext(), "Charity information saved", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -175,6 +205,19 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             editCharityName.setVisibility(View.GONE);
             editFirstName.setVisibility(View.VISIBLE);
             editLastName.setVisibility(View.VISIBLE);
+            tvOpenDays.setVisibility(View.GONE);
+            tvCloseHours.setVisibility(View.GONE);
+            tvOpenHours.setVisibility(View.GONE);
+            mon.setVisibility(getView().GONE);
+            tue.setVisibility(getView().GONE);
+            wed.setVisibility(getView().GONE);
+            thu.setVisibility(getView().GONE);
+            fri.setVisibility(getView().GONE);
+            sat.setVisibility(getView().GONE);
+            sun.setVisibility(getView().GONE);
+
+            spinner4.setVisibility(View.GONE);
+            spinner3.setVisibility(View.GONE);
         }
 
         else if (parent.getSelectedItemPosition() == 1) {
@@ -192,15 +235,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             sat.setVisibility(getView().VISIBLE);
             sun.setVisibility(getView().VISIBLE);
 
-
-            //tue.setVisibility(View.VISIBLE);
-            //wed.setVisibility(View.VISIBLE);
-            //thu.setVisibility(View.VISIBLE);
-            //fri.setVisibility(View.VISIBLE);
-            //sat.setVisibility(View.VISIBLE);
-            //sun.setVisibility(View.VISIBLE);
-            //spinner4.setVisibility(View.GONE);
-            //spinner3.setVisibility(View.GONE);
+            spinner4.setVisibility(View.VISIBLE);
+            spinner3.setVisibility(View.VISIBLE);
 
 
 

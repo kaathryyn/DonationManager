@@ -256,7 +256,13 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     public void onClick(View v) {
 
         if(v == buttonSave) {
-            saveUserInfo();
+
+            if(spinner1.getSelectedItemPosition() == 0) {
+                saveUserInfo();
+            }
+            else if(spinner1.getSelectedItemPosition() == 1) {
+
+            }
             
             Fragment fragment = null;
             fragment = new BookingFragment();

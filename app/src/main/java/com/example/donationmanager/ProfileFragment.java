@@ -153,7 +153,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         String postcode = editPostcode.getText().toString().trim();
         String state = spinner2.getSelectedItem().toString();
         String phoneNumber = editPhoneNumber.getText().toString().trim();
-        accountType = spinner1.getSelectedItem().toString();
+        accountType = "Donor";
         databaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -177,7 +177,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         String city = editCity.getText().toString().trim();
         String postcode = editPostcode.getText().toString().trim();
         String state = spinner2.getSelectedItem().toString();
-        accountType = spinner1.getSelectedItem().toString();
+        accountType = "Charity";
         String phoneNumber = editPhoneNumber.getText().toString().trim();
         String uId = user.getUid();
         int openingHour = Integer.parseInt(spinner3.getSelectedItem().toString());

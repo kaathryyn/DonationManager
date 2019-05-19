@@ -7,27 +7,103 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-public class BookingFragment extends Fragment implements View.OnClickListener {
+import java.util.ArrayList;
+import java.util.List;
 
-    private EditText charityEdittext, descriptionEdittext;
+public class BookingFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+
+    private Spinner charitySpinner, donationTypeSpinner, furnitureTypeSpinner, timeSlotSpinner;
+    private EditText descriptionEdittext;
     private Button btnSubmit;
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference firebaseDatabase;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_booking, container, false);
+        final View v = inflater.inflate(R.layout.fragment_booking, container, false);
 
 
-        charityEdittext = v.findViewById(R.id.charityEdittext);
+
+
+
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+
+
+
+        firebaseDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                final List<String> charities = new ArrayList<>();
+
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String UID = ds.getKey();
+                    if (dataSnapshot.child(UID).child("accountType").getValue() == "Charity") {
+
+                        String charityName = ds.child(UID).child("charityName").getValue().toString();
+                        charities.add(charityName);
+
+                    }
+                }
+
+                charitySpinner = v.findViewById(R.id.charitySpinner);
+                ArrayAdapter<String> charityAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item, charities);
+                charityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                charitySpinner.setAdapter(charityAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+        donationTypeSpinner = v.findViewById(R.id.donationTypeSpinner);
+        ArrayAdapter<CharSequence> adapterDonationType = ArrayAdapter.createFromResource(v.getContext(),R.array.donationType,android.R.layout.simple_spinner_item);
+        adapterDonationType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        donationTypeSpinner.setAdapter(adapterDonationType);
+        donationTypeSpinner.setOnItemSelectedListener(this);
+
+        furnitureTypeSpinner = v.findViewById(R.id.furnitureTypeSpinner);
+        ArrayAdapter<CharSequence> adapterFurnitureType = ArrayAdapter.createFromResource(v.getContext(),R.array.furnitureType,android.R.layout.simple_spinner_item);
+        adapterFurnitureType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        furnitureTypeSpinner.setAdapter(adapterFurnitureType);
+        furnitureTypeSpinner.setOnItemSelectedListener(this);
+
+        timeSlotSpinner = v.findViewById(R.id.timeSlotSpinner);
+        ArrayAdapter<CharSequence> adapterTimeSlot = ArrayAdapter.createFromResource(v.getContext(),R.array.timeSlot,android.R.layout.simple_spinner_item);
+        adapterTimeSlot.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timeSlotSpinner.setAdapter(adapterTimeSlot);
+        timeSlotSpinner.setOnItemSelectedListener(this);
+
         descriptionEdittext = v.findViewById(R.id.descriptionEdittext);
         btnSubmit = v.findViewById(R.id.btnSubmit);
         btnSubmit.setOnClickListener(this);
@@ -43,7 +119,13 @@ public class BookingFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
 
         //creates new booking object
-        Booking booking = new Booking(charityEdittext.getText().toString(), descriptionEdittext.getText().toString());
+        Booking booking = new Booking(
+                charitySpinner.getSelectedItem().toString(),
+                descriptionEdittext.getText().toString(),
+                donationTypeSpinner.getSelectedItem().toString(),
+                furnitureTypeSpinner.getSelectedItem().toString()
+        );
+
         addBooking(booking);
 
     }
@@ -69,9 +151,15 @@ public class BookingFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+    }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+    }
 
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }

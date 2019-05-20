@@ -34,6 +34,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     private Button btnSubmit;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference firebaseDatabase;
+    List<String> days = new ArrayList<>();
 
     @Nullable
     @Override
@@ -165,6 +166,21 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+        if (parent.getId() == R.id.donationTypeSpinner) {
+            firebaseDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
     @Override

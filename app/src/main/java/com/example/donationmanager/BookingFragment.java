@@ -190,7 +190,41 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
                                 if (dscharityName.equals(selectedCharity)) {
                                     System.out.println("Found chairty");
+                                    //assigning charity id
                                     selectedCharityID = ds.getKey();
+
+                                    //find available days
+                                    String dayst = ds.child("wednesdayOpen").getValue().toString();
+                                        System.out.println(dayst);
+                                    if (dayst == "true") {
+                                        System.out.println("Mondaytrue");
+                                        days.add("Monday");
+                                    }
+
+                                    if (ds.child("tuesdayOpen").getValue().toString().equals("true")) {
+                                        days.add("Tuesday");
+                                    }
+
+                                    if (ds.child("wednesdayOpen").getValue().toString().equals("true")) {
+                                        days.add("Wednesday");
+                                    }
+
+                                    if (ds.child("thursdayOpen").getValue().toString().equals("true")) {
+                                        days.add("Thursday");
+                                    }
+
+                                    if (ds.child("fridayOpen").getValue().toString().equals("true")) {
+                                        days.add("Friday");
+                                    }
+
+                                    if (ds.child("saturdayOpen").getValue().toString().equals("true")) {
+                                        days.add("Tuesday");
+                                    }
+
+                                    if (ds.child("sundayOpen").getValue().toString().equals("true")) {
+                                        days.add("Sunday");
+                                    }
+                                    System.out.println(days);
                                 }
 
                             }

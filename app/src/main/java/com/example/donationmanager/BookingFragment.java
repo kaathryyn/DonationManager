@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BookingFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -45,7 +47,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
 
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+        firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("users");
 
 
 
@@ -53,17 +55,24 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                final List<String> charities = new ArrayList<>();
+                List<String> charities = new ArrayList<>();
 
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String UID = ds.getKey();
-                    if (dataSnapshot.child(UID).child("accountType").getValue() == "Charity") {
-
-                        String charityName = ds.child(UID).child("charityName").getValue().toString();
+                    System.out.println(ds.child("accountType"));
+                    String accountType = ds.child("accountType").getValue().toString();
+                    System.out.println(accountType);
+                    if (accountType.equals("Charity")) {
+                        String charityName = ds.child("charityName").getValue().toString();
                         charities.add(charityName);
 
                     }
+                    else {
+                        System.out.println("no match");
+                    }
                 }
+
+
+                System.out.println(charities);
 
                 charitySpinner = v.findViewById(R.id.charitySpinner);
                 ArrayAdapter<String> charityAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item, charities);

@@ -159,11 +159,26 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         FirebaseUser user = firebaseAuth.getCurrentUser();
         String uId = user.getUid();
 
-        DonorInformation donorInformation = new DonorInformation(firstName, lastName, address,city, postcode, state, phoneNumber, accountType, uId, true);
+        if(firstName.isEmpty()) {
+            Toast.makeText(getContext(), "Please enter your first name", Toast.LENGTH_SHORT).show();
+        } else if (lastName.isEmpty()) {
+            Toast.makeText(getContext(), "Please enter you last name", Toast.LENGTH_SHORT).show();
+        } else if (address.isEmpty()) {
+            Toast.makeText(getContext(), "Please enter your address", Toast.LENGTH_SHORT).show();
+        } else if (city.isEmpty()) {
+            Toast.makeText(getContext(), "Please enter a city", Toast.LENGTH_SHORT).show();
+        } else if (postcode.isEmpty()) {
+            Toast.makeText(getContext(), "Please enter a postcode", Toast.LENGTH_SHORT).show();
+        } else if (state.isEmpty()) {
+            Toast.makeText(getContext(), "Please enter a state", Toast.LENGTH_SHORT).show();
+        } else if (phoneNumber.isEmpty()) {
+            Toast.makeText(getContext(), "Please enter your phone number", Toast.LENGTH_SHORT).show();
+        } else {
+            DonorInformation donorInformation = new DonorInformation(firstName, lastName, address,city, postcode, state, phoneNumber, accountType, uId, true);
 
-
-        databaseReference.child("users").child(uId).setValue(donorInformation);
-        Toast.makeText(getContext(), "Donor info saved", Toast.LENGTH_SHORT).show();
+            databaseReference.child("users").child(uId).setValue(donorInformation);
+            Toast.makeText(getContext(), "Donor info saved", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void saveCharityInfo() {
@@ -190,13 +205,24 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         boolean saturdayOpen = sat.isSelected();
         boolean sundayOpen =  sun.isSelected();
 
+        if (charityName.isEmpty()) {
+            Toast.makeText(getContext(), "Please enter the name of your charity", Toast.LENGTH_SHORT).show();
+        } else if (address.isEmpty()) {
+            Toast.makeText(getContext(), "Please enter your address", Toast.LENGTH_SHORT).show();
+        } else if (city.isEmpty()) {
+            Toast.makeText(getContext(), "Please enter a city", Toast.LENGTH_SHORT).show();
+        } else if (postcode.isEmpty()) {
+            Toast.makeText(getContext(), "Please enter a postcode", Toast.LENGTH_SHORT).show();
+        } else if (state.isEmpty()) {
+            Toast.makeText(getContext(), "Please enter a state", Toast.LENGTH_SHORT).show();
+        } else if (phoneNumber.isEmpty()) {
+            Toast.makeText(getContext(), "Please enter your phone number", Toast.LENGTH_SHORT).show();
+        } else {
+            CharityInformation charityInformation = new CharityInformation(charityName, address, city, postcode, state, phoneNumber, accountType, uId, openingHour, closingHour, mondayOpen, tuesdayOpen, wednesdayOpen, thursdayOpen, fridayOpen, saturdayOpen, sundayOpen, true);
 
-
-        CharityInformation charityInformation = new CharityInformation(charityName, address, city, postcode, state, phoneNumber, accountType, uId, openingHour, closingHour, mondayOpen, tuesdayOpen, wednesdayOpen, thursdayOpen, fridayOpen, saturdayOpen, sundayOpen, true);
-
-
-        databaseReference.child("users").child(uId).setValue(charityInformation);
-        Toast.makeText(getContext(), "Charity information saved", Toast.LENGTH_SHORT).show();
+            databaseReference.child("users").child(uId).setValue(charityInformation);
+            Toast.makeText(getContext(), "Charity information saved", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

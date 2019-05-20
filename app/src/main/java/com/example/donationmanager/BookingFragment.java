@@ -35,6 +35,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     private FirebaseAuth firebaseAuth;
     private DatabaseReference firebaseDatabase;
     List<String> days = new ArrayList<>();
+    String selectedCharity;
 
     @Nullable
     @Override
@@ -59,21 +60,16 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                 List<String> charities = new ArrayList<>();
 
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    System.out.println(ds.child("accountType"));
                     String accountType = ds.child("accountType").getValue().toString();
-                    System.out.println(accountType);
+
                     if (accountType.equals("Charity")) {
                         String charityName = ds.child("charityName").getValue().toString();
                         charities.add(charityName);
 
                     }
-                    else {
-                        System.out.println("no match");
-                    }
                 }
 
 
-                System.out.println(charities);
 
                 charitySpinner = v.findViewById(R.id.charitySpinner);
                 ArrayAdapter<String> charityAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item, charities);
@@ -166,11 +162,64 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        if (parent.getId() == R.id.donationTypeSpinner) {
+        switch(parent.getId()) {
+            case R.id.charitySpinner :
+                System.out.println("we reached checkpoint1");
+                view.findViewById(R.id.daySlotSpinner).setVisibility(View.GONE);
+
+                break;
+
+            case R.id.daySlotSpinner :
+
+                break;
+
+        }
+
+            days.clear();
+
+
+            /*
             firebaseDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
+
+                        //System.out.println(ds.child(selectedCharity));
+
+
+
+                        /*if (ds.child("mondayOpen").equals("true")) {
+                            days.add("Monday");
+                        }
+
+                        if (ds.child("tuesdayOpen").equals("true")) {
+                            days.add("Tuesday");
+                        }
+
+                        if (ds.child("wednesdayOpen").equals("true")) {
+                            days.add("Wednesday");
+                        }
+
+                        if (ds.child("thursdayOpen").equals("true")) {
+                            days.add("Thursday");
+                        }
+
+                        if (ds.child("fridayOpen").equals("true")) {
+                            days.add("Friday");
+                        }
+
+                        if (ds.child("saturdayOpen").equals("true")) {
+                            days.add("Tuesday");
+                        }
+
+                        if (ds.child("sundayOpen").equals("true")) {
+                            days.add("Sunday");
+                        }
+
+                    }
+
+                    System.out.println(days);
 
 
                 }
@@ -180,7 +229,8 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
                 }
             });
-        }
+*/
+
     }
 
     @Override

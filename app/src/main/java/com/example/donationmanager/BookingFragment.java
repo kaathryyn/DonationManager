@@ -29,13 +29,15 @@ import java.util.List;
 
 public class BookingFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
-    private Spinner charitySpinner, donationTypeSpinner, furnitureTypeSpinner, timeSlotSpinner;
+    private Spinner charitySpinner, donationTypeSpinner, furnitureTypeSpinner, timeSlotSpinner, daySlotSpinner;
     private EditText descriptionEdittext;
     private Button btnSubmit;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference firebaseDatabase;
     List<String> days = new ArrayList<>();
     List<String> charities = new ArrayList<>();
+    ArrayAdapter<String> daySlotAdapter;
+
 
     String selectedCharity;
     String selectedCharityID;
@@ -114,6 +116,13 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
         timeSlotSpinner.setAdapter(adapterTimeSlot);
         timeSlotSpinner.setOnItemSelectedListener(this);
 
+        daySlotSpinner = v.findViewById(R.id.daySlotSpinner);
+        daySlotAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item);
+        daySlotAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        daySlotSpinner.setAdapter(daySlotAdapter);
+        daySlotSpinner.setOnItemSelectedListener(this);
+
+
         descriptionEdittext = v.findViewById(R.id.descriptionEdittext);
         btnSubmit = v.findViewById(R.id.btnSubmit);
         btnSubmit.setOnClickListener(this);
@@ -166,14 +175,22 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        //selecting chairty loads apporpriate available date, selecting day loads
+        //selecting charity loads apporpriate available date, selecting day loads
         // appropriate free time slots
+
         switch(parent.getId()) {
 
             case R.id.charitySpinner :
                 //find chosen charity
                 selectedCharity = parent.getSelectedItem().toString();
                 System.out.println(selectedCharity);
+
+
+                //clear data array
+                days.clear();
+
+                //initialise spinner
+
 
                 //find available days
 
@@ -189,42 +206,40 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                                 String dscharityName = ds.child("charityName").getValue().toString();
 
                                 if (dscharityName.equals(selectedCharity)) {
-                                    System.out.println("Found chairty");
                                     //assigning charity id
                                     selectedCharityID = ds.getKey();
 
                                     //find available days
-                                    String dayst = ds.child("wednesdayOpen").getValue().toString();
-                                        System.out.println(dayst);
-                                    if (dayst == "true") {
-                                        System.out.println("Mondaytrue");
-                                        days.add("Monday");
+
+                                    if (ds.child("mondayOpen").getValue().toString().equals("true")) {
+                                        daySlotAdapter.add("Monday");
                                     }
 
                                     if (ds.child("tuesdayOpen").getValue().toString().equals("true")) {
-                                        days.add("Tuesday");
+                                        daySlotAdapter.add("Tuesday");
                                     }
 
                                     if (ds.child("wednesdayOpen").getValue().toString().equals("true")) {
-                                        days.add("Wednesday");
+                                        daySlotAdapter.add("Wednesday");
                                     }
 
                                     if (ds.child("thursdayOpen").getValue().toString().equals("true")) {
-                                        days.add("Thursday");
+                                        daySlotAdapter.add("Thursday");
                                     }
 
                                     if (ds.child("fridayOpen").getValue().toString().equals("true")) {
-                                        days.add("Friday");
+                                        daySlotAdapter.add("Friday");
                                     }
 
                                     if (ds.child("saturdayOpen").getValue().toString().equals("true")) {
-                                        days.add("Tuesday");
+                                        daySlotAdapter.add("Tuesday");
                                     }
 
                                     if (ds.child("sundayOpen").getValue().toString().equals("true")) {
-                                        days.add("Sunday");
+                                        daySlotAdapter.add("Sunday");
                                     }
-                                    System.out.println(days);
+
+                                    System.out.println(daySlotAdapter);
                                 }
 
                             }
@@ -246,7 +261,6 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
         }
 
-            days.clear();
 
 
             /*

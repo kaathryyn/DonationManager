@@ -38,6 +38,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     List<String> charities = new ArrayList<>();
 
     String selectedCharity;
+    String selectedCharityID;
 
     @Nullable
     @Override
@@ -49,12 +50,17 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
 
 
-
+        //setup and initilaise firebase auth and firebasedb
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("users");
 
 
+        charitySpinner = v.findViewById(R.id.charitySpinner);
+        final ArrayAdapter<String> charityAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item);
+        charityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        charitySpinner.setAdapter(charityAdapter);
 
+        //query db for all available charity names and populate chairtyspinner with data
         firebaseDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -65,24 +71,19 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
                     if (accountType.equals("Charity")) {
                         String charityName = ds.child("charityName").getValue().toString();
-                        charities.add(charityName);
+                        charityAdapter.add(charityName);
 
                     }
                 }
-
-
-
-                charitySpinner = v.findViewById(R.id.charitySpinner);
-                ArrayAdapter<String> charityAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item, charities);
-                charityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                charitySpinner.setAdapter(charityAdapter);
-                //charitySpinner.setOnItemSelectedListener(this);
             }
+
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
         });
 
 
@@ -93,6 +94,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
 
 
+        charitySpinner.setOnItemSelectedListener(this);
 
         donationTypeSpinner = v.findViewById(R.id.donationTypeSpinner);
         ArrayAdapter<CharSequence> adapterDonationType = ArrayAdapter.createFromResource(v.getContext(),R.array.donationType,android.R.layout.simple_spinner_item);
@@ -163,11 +165,44 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            System.out.println(parent.getSelectedItem());
+
+        //selecting chairty loads apporpriate available date, selecting day loads
+        // appropriate free time slots
         switch(parent.getId()) {
+
             case R.id.charitySpinner :
-                System.out.println("we reached checkpoint1");
-                view.findViewById(R.id.daySlotSpinner).setVisibility(View.GONE);
+                //find chosen charity
+                selectedCharity = parent.getSelectedItem().toString();
+                System.out.println(selectedCharity);
+
+                //find available days
+
+                firebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        for(DataSnapshot ds : dataSnapshot.getChildren()) {
+
+                            String accountType = ds.child("accountType").getValue().toString();
+
+                            if (accountType.equals("Charity")) {
+                                String dscharityName = ds.child("charityName").getValue().toString();
+
+                                if (dscharityName.equals(selectedCharity)) {
+                                    System.out.println("Found chairty");
+                                    selectedCharityID = ds.getKey();
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
                 break;
 

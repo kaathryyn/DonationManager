@@ -35,6 +35,8 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     private FirebaseAuth firebaseAuth;
     private DatabaseReference firebaseDatabase;
     List<String> days = new ArrayList<>();
+    List<String> charities = new ArrayList<>();
+
     String selectedCharity;
 
     @Nullable
@@ -57,7 +59,6 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                List<String> charities = new ArrayList<>();
 
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String accountType = ds.child("accountType").getValue().toString();
@@ -75,6 +76,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                 ArrayAdapter<String> charityAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item, charities);
                 charityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 charitySpinner.setAdapter(charityAdapter);
+                //charitySpinner.setOnItemSelectedListener(this);
             }
 
             @Override
@@ -161,7 +163,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+            System.out.println(parent.getSelectedItem());
         switch(parent.getId()) {
             case R.id.charitySpinner :
                 System.out.println("we reached checkpoint1");

@@ -36,12 +36,12 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     private Button btnSubmit;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference firebaseDatabase;
-    List<String> days = new ArrayList<>();
+    Boolean[] days = new Boolean[] {false,false,false,false,false,false,false};
     List<String> charities = new ArrayList<>();
     ArrayAdapter<String> daySlotAdapter, charityAdapter, timeSlotAdapter;
 
-    private Calendar lastSelectedCalendar = null;
-    private CalendarView calendarView;
+    Calendar lastSelectedCalendar = null;
+    CalendarView calendarView;
 
 
     String selectedCharity;
@@ -53,22 +53,10 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
         final View v = inflater.inflate(R.layout.fragment_booking, container, false);
 
+
         calendarView = (CalendarView) v.findViewById(R.id.calenderView);
         lastSelectedCalendar = Calendar.getInstance();
         calendarView.setMinDate(lastSelectedCalendar.getTimeInMillis() - 1000);
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                Calendar checkCalender = Calendar.getInstance();
-                checkCalender.set(year, month, dayOfMonth);
-                if(checkCalender.equals(lastSelectedCalendar))
-                    return;
-                if(checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
-                    calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
-                else
-                    lastSelectedCalendar = checkCalender;
-            }
-        });
 
 
 
@@ -119,11 +107,6 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
         donationTypeSpinner.setAdapter(adapterDonationType);
         donationTypeSpinner.setOnItemSelectedListener(this);
 
-        daySlotSpinner = v.findViewById(R.id.daySlotSpinner);
-        daySlotAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item);
-        daySlotAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        daySlotSpinner.setAdapter(daySlotAdapter);
-        daySlotSpinner.setOnItemSelectedListener(this);
 
         furnitureTypeSpinner = v.findViewById(R.id.furnitureTypeSpinner);
         ArrayAdapter<CharSequence> adapterFurnitureType = ArrayAdapter.createFromResource(v.getContext(),R.array.furnitureType,android.R.layout.simple_spinner_item);
@@ -240,9 +223,12 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
 
                 //clear data array
-                daySlotAdapter.clear();
+                Arrays.fill(days,false);
 
                 //initialise spinner
+
+
+
 
 
                 //find available days
@@ -265,34 +251,34 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                                     //find available days
 
                                     if (ds.child("mondayOpen").getValue().toString().equals("true")) {
-                                        daySlotAdapter.add("Monday");
+                                        days[0] = true;
                                     }
 
                                     if (ds.child("tuesdayOpen").getValue().toString().equals("true")) {
-                                        daySlotAdapter.add("Tuesday");
+                                        days[1] = true;
                                     }
 
                                     if (ds.child("wednesdayOpen").getValue().toString().equals("true")) {
-                                        daySlotAdapter.add("Wednesday");
+                                        days[2] = true;
                                     }
 
                                     if (ds.child("thursdayOpen").getValue().toString().equals("true")) {
-                                        daySlotAdapter.add("Thursday");
+                                        days[3] = true;
                                     }
 
                                     if (ds.child("fridayOpen").getValue().toString().equals("true")) {
-                                        daySlotAdapter.add("Friday");
+                                        days[4] = true;
                                     }
 
                                     if (ds.child("saturdayOpen").getValue().toString().equals("true")) {
-                                        daySlotAdapter.add("Tuesday");
+                                        days[5] = true;
                                     }
 
                                     if (ds.child("sundayOpen").getValue().toString().equals("true")) {
-                                        daySlotAdapter.add("Sunday");
+                                        days[6] = true;
                                     }
 
-                                    System.out.println(daySlotAdapter);
+                                    System.out.println(days[0]);
                                 }
 
                             }
@@ -307,11 +293,50 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                     }
                 });
 
+                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                    @Override
+                    public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                        Calendar checkCalender = Calendar.getInstance();
+                        checkCalender.set(year, month, dayOfMonth);
+                        if(checkCalender.equals(lastSelectedCalendar)) {
+                            return;
+                        }
+
+                        if((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) && !days[0].booleanValue())  {
+                            calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
+                        }
+
+                        else if((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY) && !days[1].booleanValue())  {
+                            calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
+                        }
+
+                        else if((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY) && !days[2].booleanValue())  {
+                            calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
+                        }
+
+                        else if((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY) && !days[3].booleanValue())  {
+                            calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
+                        }
+
+                        else if((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) && !days[4].booleanValue())  {
+                            calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
+                        }
+
+                        else if((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) && !days[5].booleanValue())  {
+                            calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
+                        }
+
+                        else if((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) && !days[6].booleanValue())  {
+                            calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
+                        }
+                        else {
+                            lastSelectedCalendar = checkCalender;
+                        }
+                    }
+                });
+
                 break;
 
-            case R.id.daySlotSpinner :
-
-                break;
 
         }
         }

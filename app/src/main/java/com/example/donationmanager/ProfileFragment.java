@@ -286,8 +286,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                     Toast.makeText(getContext(), "Please enter a postcode", Toast.LENGTH_SHORT).show();
                 } else if (editPhoneNumber.getText().toString().isEmpty()) {
                     Toast.makeText(getContext(), "Please enter your phone number", Toast.LENGTH_SHORT).show();
-                } else if (!mon.isChecked() && !tue.isChecked() && !wed.isChecked() && !thu.isChecked() && !fri.isChecked() && !sat.isChecked() && sun.isChecked()) {
-                    Toast.makeText(getContext(), "Please select days you are open", Toast.LENGTH_SHORT).show();
+//                } else if ((!mon.isPressed()) && (!tue.isPressed()) && (!wed.isPressed()) && (!thu.isPressed()) && (!fri.isPressed()) && (!sat.isPressed()) && (sun.isPressed())) {
+//                    Toast.makeText(getContext(), "Please select days you are open", Toast.LENGTH_SHORT).show();
 //                } else if (!spinner3.) {
 //                    Toast.makeText(getContext(), "Please select your opening time", Toast.LENGTH_SHORT).show();
 //                } else if (!spinner4.isSelected()) {

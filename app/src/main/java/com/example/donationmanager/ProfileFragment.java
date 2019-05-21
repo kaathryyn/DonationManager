@@ -20,8 +20,12 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 
 import org.w3c.dom.Text;
@@ -41,6 +45,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     private TextView tvOpenHours, tvCloseHours, tvOpenDays;
     //initialise db reference
     private DatabaseReference databaseReference;
+    private DatabaseReference dbDonors;
+    private DatabaseReference dbCharity;
     private FirebaseAuth firebaseAuth;
     int accountPosition;
     Spinner spinner1, spinner2, spinner3, spinner4;
@@ -111,13 +117,38 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         spinner4.setAdapter(adapter3);
         spinner4.setOnItemSelectedListener(this);
 
-
-
-
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        String userID = user.getUid();
 
         //hide or show fields based on account type
-        accountPosition = spinner1.getSelectedItemPosition() +1;
-        if(spinner1.getSelectedItemPosition() + 1 == 1) {
+        if (databaseReference.child("users").child(userID).child("initialSetup").equals(false)) {
+            accountPosition = spinner1.getSelectedItemPosition() + 1;
+            if (spinner1.getSelectedItemPosition() + 1 == 1) {
+                editCharityName.setVisibility(View.GONE);
+                tvOpenDays.setVisibility(View.GONE);
+                tvCloseHours.setVisibility(View.GONE);
+                tvOpenHours.setVisibility(View.GONE);
+                spinner4.setVisibility(View.GONE);
+                spinner3.setVisibility(View.GONE);
+                mon.setVisibility(View.INVISIBLE);
+                tue.setVisibility(View.INVISIBLE);
+                wed.setVisibility(View.INVISIBLE);
+                thu.setVisibility(View.INVISIBLE);
+                fri.setVisibility(View.INVISIBLE);
+                sat.setVisibility(View.INVISIBLE);
+                sun.setVisibility(View.INVISIBLE);
+
+
+            } else {
+                editFirstName.setVisibility(v.GONE);
+                editLastName.setVisibility(v.GONE);
+            }
+        }
+        else {
+            editFirstName.setVisibility(v.GONE);
+            editLastName.setVisibility(v.GONE);
             editCharityName.setVisibility(View.GONE);
             tvOpenDays.setVisibility(View.GONE);
             tvCloseHours.setVisibility(View.GONE);
@@ -131,18 +162,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             fri.setVisibility(View.INVISIBLE);
             sat.setVisibility(View.INVISIBLE);
             sun.setVisibility(View.INVISIBLE);
-
-
-
-
-
-        }
-        else {
-            editFirstName.setVisibility(v.GONE);
-            editLastName.setVisibility(v.GONE);
         }
         return v;
-
     }
 
     private void saveUserInfo() {
@@ -193,7 +214,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
 
         CharityInformation charityInformation = new CharityInformation(charityName, address, city, postcode, state, phoneNumber, accountType, uId, openingHour, closingHour, mondayOpen, tuesdayOpen, wednesdayOpen, thursdayOpen, fridayOpen, saturdayOpen, sundayOpen, true);
-
 
         databaseReference.child("users").child(uId).setValue(charityInformation);
         Toast.makeText(getContext(), "Charity information saved", Toast.LENGTH_SHORT).show();

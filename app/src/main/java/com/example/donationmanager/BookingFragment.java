@@ -36,7 +36,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     private DatabaseReference firebaseDatabase;
     List<String> days = new ArrayList<>();
     List<String> charities = new ArrayList<>();
-    ArrayAdapter<String> daySlotAdapter;
+    ArrayAdapter<String> daySlotAdapter, charityAdapter, timeSlotAdapter;
 
 
     String selectedCharity;
@@ -58,7 +58,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
 
         charitySpinner = v.findViewById(R.id.charitySpinner);
-        final ArrayAdapter<String> charityAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item);
+        charityAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item);
         charityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         charitySpinner.setAdapter(charityAdapter);
 
@@ -89,14 +89,8 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
         });
 
 
-
-
-
-
-
-
-
         charitySpinner.setOnItemSelectedListener(this);
+
 
         donationTypeSpinner = v.findViewById(R.id.donationTypeSpinner);
         ArrayAdapter<CharSequence> adapterDonationType = ArrayAdapter.createFromResource(v.getContext(),R.array.donationType,android.R.layout.simple_spinner_item);
@@ -104,23 +98,24 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
         donationTypeSpinner.setAdapter(adapterDonationType);
         donationTypeSpinner.setOnItemSelectedListener(this);
 
+        daySlotSpinner = v.findViewById(R.id.daySlotSpinner);
+        daySlotAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item);
+        daySlotAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        daySlotSpinner.setAdapter(daySlotAdapter);
+        daySlotSpinner.setOnItemSelectedListener(this);
+
         furnitureTypeSpinner = v.findViewById(R.id.furnitureTypeSpinner);
         ArrayAdapter<CharSequence> adapterFurnitureType = ArrayAdapter.createFromResource(v.getContext(),R.array.furnitureType,android.R.layout.simple_spinner_item);
         adapterFurnitureType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         furnitureTypeSpinner.setAdapter(adapterFurnitureType);
         furnitureTypeSpinner.setOnItemSelectedListener(this);
 
-        timeSlotSpinner = v.findViewById(R.id.timeSlotSpinner);
-        ArrayAdapter<CharSequence> adapterTimeSlot = ArrayAdapter.createFromResource(v.getContext(),R.array.timeSlot,android.R.layout.simple_spinner_item);
-        adapterTimeSlot.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        timeSlotSpinner.setAdapter(adapterTimeSlot);
-        timeSlotSpinner.setOnItemSelectedListener(this);
 
-        daySlotSpinner = v.findViewById(R.id.daySlotSpinner);
-        daySlotAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item);
-        daySlotAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        daySlotSpinner.setAdapter(daySlotAdapter);
-        daySlotSpinner.setOnItemSelectedListener(this);
+
+        timeSlotSpinner = v.findViewById(R.id.timeSlotSpinner);
+        timeSlotAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item);
+        timeSlotAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timeSlotSpinner.setAdapter(timeSlotAdapter);
 
 
         descriptionEdittext = v.findViewById(R.id.descriptionEdittext);
@@ -142,7 +137,9 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                 charitySpinner.getSelectedItem().toString(),
                 descriptionEdittext.getText().toString(),
                 donationTypeSpinner.getSelectedItem().toString(),
-                furnitureTypeSpinner.getSelectedItem().toString()
+                furnitureTypeSpinner.getSelectedItem().toString(),
+                daySlotSpinner.getSelectedItem().toString(),
+                timeSlotSpinner.getSelectedItem().toString()
         );
 
         addBooking(booking);
@@ -245,6 +242,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                             }
 
                         }
+
                     }
 
                     @Override
@@ -260,6 +258,42 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                 break;
 
         }
+
+        firebaseDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                timeSlotAdapter.clear();
+
+                String charityName = charitySpinner.getSelectedItem().toString();
+
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+
+                    String accountType = ds.child("accountType").getValue().toString();
+
+                    //if current entry has the same name as the selected charityspinner save open and close hours as int
+                    if (accountType.equals("Charity") && charityName.equals(ds.child("charityName").getValue().toString())) {
+                        int charityOpen = Integer.parseInt(ds.child("openingHour").getValue().toString());
+                        int charityClose = Integer.parseInt(ds.child("closingHour").getValue().toString());
+
+                        //add hours to spinner
+                        for (int i = charityOpen; i < charityClose; i+=100) {
+
+                            String padded = String.format("%04d", i);
+                            timeSlotAdapter.add(padded);
+                        }
+
+                    }
+                }
+            }
+
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
+        });
 
 
 

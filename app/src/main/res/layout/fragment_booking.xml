@@ -108,7 +108,7 @@
         android:text="Time Slot"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+        app:layout_constraintTop_toBottomOf="@+id/calenderView" />
 
     <TextView
         android:id="@+id/textView10"
@@ -122,6 +122,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
+    <CalendarView
+        android:id="@+id/calenderView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
 
     <Spinner
         android:id="@+id/timeSlotSpinner"
@@ -131,7 +142,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toEndOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/daySlotSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/calenderView" />
 
     <Spinner
         android:id="@+id/daySlotSpinner"
@@ -163,10 +174,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="76dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timeSlotSpinner">
 
@@ -174,9 +186,9 @@
             android:id="@+id/descriptionEdittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
             android:hint="Description"
-            android:textColor="@android:color/black"/>
+            android:inputType="textMultiLine"
+            android:textColor="@android:color/black" />
 
     </android.support.design.widget.TextInputLayout>
 

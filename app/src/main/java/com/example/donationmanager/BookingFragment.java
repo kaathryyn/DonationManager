@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -25,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class BookingFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -38,6 +40,9 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     List<String> charities = new ArrayList<>();
     ArrayAdapter<String> daySlotAdapter, charityAdapter, timeSlotAdapter;
 
+    private Calendar lastSelectedCalendar = null;
+    private CalendarView calendarView;
+
 
     String selectedCharity;
     String selectedCharityID;
@@ -48,7 +53,22 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
         final View v = inflater.inflate(R.layout.fragment_booking, container, false);
 
-
+        calendarView = (CalendarView) v.findViewById(R.id.calenderView);
+        lastSelectedCalendar = Calendar.getInstance();
+        calendarView.setMinDate(lastSelectedCalendar.getTimeInMillis() - 1000);
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                Calendar checkCalender = Calendar.getInstance();
+                checkCalender.set(year, month, dayOfMonth);
+                if(checkCalender.equals(lastSelectedCalendar))
+                    return;
+                if(checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
+                    calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
+                else
+                    lastSelectedCalendar = checkCalender;
+            }
+        });
 
 
 

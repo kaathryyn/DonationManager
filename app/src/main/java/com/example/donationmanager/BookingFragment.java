@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -37,8 +38,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     private FirebaseAuth firebaseAuth;
     private DatabaseReference firebaseDatabase;
     Boolean[] days = new Boolean[] {false,false,false,false,false,false,false};
-    List<String> charities = new ArrayList<>();
-    ArrayAdapter<String> daySlotAdapter, charityAdapter, timeSlotAdapter;
+    ArrayAdapter<String> charityAdapter, timeSlotAdapter;
 
     Calendar lastSelectedCalendar = null;
     CalendarView calendarView;
@@ -46,6 +46,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
     String selectedCharity;
     String selectedCharityID;
+    long bookingTimeStamp;
 
     @Nullable
     @Override
@@ -69,7 +70,11 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
         charitySpinner = v.findViewById(R.id.charitySpinner);
         charityAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item);
         charityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        charitySpinner.setAdapter(charityAdapter);
+        charitySpinner.setPrompt("Select Charity");
+        charitySpinner.setAdapter(
+                new NothingSelectedSpinnerAdapter(
+                        charityAdapter,
+                        R.layout.contact_spinner_row_nothing_selected,getContext()));
 
         //query db for all available charity names and populate chairtyspinner with data
         firebaseDatabase.addValueEventListener(new ValueEventListener() {
@@ -178,226 +183,164 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
         //selecting charity loads apporpriate available date, selecting day loads
         // appropriate free time slots
+        if (position != 0) {
+            switch (parent.getId()) {
 
-        switch(parent.getId()) {
-
-            case R.id.charitySpinner :
-                //find chosen charity
-                selectedCharity = parent.getSelectedItem().toString();
-                System.out.println(selectedCharity);
+                case R.id.charitySpinner:
+                    //find chosen charity
+                    selectedCharity = parent.getSelectedItem().toString();
+                    System.out.println(selectedCharity);
 
 
-                firebaseDatabase.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        timeSlotAdapter.clear();
+                    firebaseDatabase.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            timeSlotAdapter.clear();
 
-                        for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
-                            String accountType = ds.child("accountType").getValue().toString();
+                                String accountType = ds.child("accountType").getValue().toString();
 
-                            //if current entry has the same name as the selected charityspinner save open and close hours as int
-                            if (accountType.equals("Charity") && selectedCharity.equals(ds.child("charityName").getValue().toString())) {
-                                int charityOpen = Integer.parseInt(ds.child("openingHour").getValue().toString());
-                                int charityClose = Integer.parseInt(ds.child("closingHour").getValue().toString());
+                                //if current entry has the same name as the selected charityspinner save open and close hours as int
+                                if (accountType.equals("Charity") && selectedCharity.equals(ds.child("charityName").getValue().toString())) {
+                                    int charityOpen = Integer.parseInt(ds.child("openingHour").getValue().toString());
+                                    int charityClose = Integer.parseInt(ds.child("closingHour").getValue().toString());
 
-                                //add hours to spinner
-                                for (int i = charityOpen; i < charityClose; i+=100) {
+                                    //add hours to spinner
+                                    for (int i = charityOpen; i < charityClose; i += 100) {
 
-                                    String padded = String.format("%04d", i);
-                                    timeSlotAdapter.add(padded);
+                                        String padded = String.format("%04d", i);
+                                        timeSlotAdapter.add(padded);
+                                    }
+
+                                }
+                            }
+                        }
+
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+
+                    });
+
+
+                    //clear data array
+                    Arrays.fill(days, false);
+
+                    //initialise spinner
+
+
+                    //find available days
+
+                    firebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+
+                                String accountType = ds.child("accountType").getValue().toString();
+
+                                if (accountType.equals("Charity")) {
+                                    String dscharityName = ds.child("charityName").getValue().toString();
+
+                                    if (dscharityName.equals(selectedCharity)) {
+                                        //assigning charity id
+                                        selectedCharityID = ds.getKey();
+
+                                        //find available days
+
+                                        if (ds.child("mondayOpen").getValue().toString().equals("true")) {
+                                            days[0] = true;
+                                        }
+
+                                        if (ds.child("tuesdayOpen").getValue().toString().equals("true")) {
+                                            days[1] = true;
+                                        }
+
+                                        if (ds.child("wednesdayOpen").getValue().toString().equals("true")) {
+                                            days[2] = true;
+                                        }
+
+                                        if (ds.child("thursdayOpen").getValue().toString().equals("true")) {
+                                            days[3] = true;
+                                        }
+
+                                        if (ds.child("fridayOpen").getValue().toString().equals("true")) {
+                                            days[4] = true;
+                                        }
+
+                                        if (ds.child("saturdayOpen").getValue().toString().equals("true")) {
+                                            days[5] = true;
+                                        }
+
+                                        if (ds.child("sundayOpen").getValue().toString().equals("true")) {
+                                            days[6] = true;
+                                        }
+
+                                    }
+
                                 }
 
                             }
+
+
                         }
-                    }
 
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                        }
+                    });
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                        @Override
+                        public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                            Calendar checkCalender = Calendar.getInstance();
+                            checkCalender.set(year, month, dayOfMonth);
+                            if (checkCalender.equals(lastSelectedCalendar)) {
 
-                    }
+                                return;
+                            }
 
-                });
-
-
-                //clear data array
-                Arrays.fill(days,false);
-
-                //initialise spinner
-
-
-
-
-
-                //find available days
-
-                firebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                        for(DataSnapshot ds : dataSnapshot.getChildren()) {
-
-                            String accountType = ds.child("accountType").getValue().toString();
-
-                            if (accountType.equals("Charity")) {
-                                String dscharityName = ds.child("charityName").getValue().toString();
-
-                                if (dscharityName.equals(selectedCharity)) {
-                                    //assigning charity id
-                                    selectedCharityID = ds.getKey();
-
-                                    //find available days
-
-                                    if (ds.child("mondayOpen").getValue().toString().equals("true")) {
-                                        days[0] = true;
-                                    }
-
-                                    if (ds.child("tuesdayOpen").getValue().toString().equals("true")) {
-                                        days[1] = true;
-                                    }
-
-                                    if (ds.child("wednesdayOpen").getValue().toString().equals("true")) {
-                                        days[2] = true;
-                                    }
-
-                                    if (ds.child("thursdayOpen").getValue().toString().equals("true")) {
-                                        days[3] = true;
-                                    }
-
-                                    if (ds.child("fridayOpen").getValue().toString().equals("true")) {
-                                        days[4] = true;
-                                    }
-
-                                    if (ds.child("saturdayOpen").getValue().toString().equals("true")) {
-                                        days[5] = true;
-                                    }
-
-                                    if (ds.child("sundayOpen").getValue().toString().equals("true")) {
-                                        days[6] = true;
-                                    }
-
-                                    System.out.println(days[0]);
-                                }
+                            if ((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) && !days[0].booleanValue()) {
+                                calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
+                            } else if ((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY) && !days[1].booleanValue()) {
+                                calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
+                            } else if ((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY) && !days[2].booleanValue()) {
+                                calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
+                            } else if ((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY) && !days[3].booleanValue()) {
+                                calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
+                            } else if ((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) && !days[4].booleanValue()) {
+                                calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
+                            } else if ((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) && !days[5].booleanValue()) {
+                                calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
+                            } else if ((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) && !days[6].booleanValue()) {
+                                calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
+                            } else {
+                                lastSelectedCalendar = checkCalender;
+                                checkCalender.set(Calendar.HOUR_OF_DAY, 0);
+                                checkCalender.set(Calendar.MINUTE, 0);
+                                checkCalender.set(Calendar.SECOND, 0);
+                                checkCalender.set(Calendar.MILLISECOND, 0);
+                                bookingTimeStamp = checkCalender.getTimeInMillis();
+                                System.out.println(bookingTimeStamp);
 
                             }
 
+
                         }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-                    @Override
-                    public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                        Calendar checkCalender = Calendar.getInstance();
-                        checkCalender.set(year, month, dayOfMonth);
-                        if(checkCalender.equals(lastSelectedCalendar)) {
-                            return;
-                        }
-
-                        if((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) && !days[0].booleanValue())  {
-                            calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
-                        }
-
-                        else if((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY) && !days[1].booleanValue())  {
-                            calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
-                        }
-
-                        else if((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY) && !days[2].booleanValue())  {
-                            calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
-                        }
-
-                        else if((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY) && !days[3].booleanValue())  {
-                            calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
-                        }
-
-                        else if((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) && !days[4].booleanValue())  {
-                            calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
-                        }
-
-                        else if((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) && !days[5].booleanValue())  {
-                            calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
-                        }
-
-                        else if((checkCalender.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) && !days[6].booleanValue())  {
-                            calendarView.setDate(lastSelectedCalendar.getTimeInMillis());
-                        }
-                        else {
-                            lastSelectedCalendar = checkCalender;
-                        }
-                    }
-                });
-
-                break;
+                    });
 
 
+                    break;
+
+
+            }
+    }
         }
-        }
-
-
-
-            /*
-            firebaseDatabase.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
-
-                        //System.out.println(ds.child(selectedCharity));
-
-
-
-                        /*if (ds.child("mondayOpen").equals("true")) {
-                            days.add("Monday");
-                        }
-
-                        if (ds.child("tuesdayOpen").equals("true")) {
-                            days.add("Tuesday");
-                        }
-
-                        if (ds.child("wednesdayOpen").equals("true")) {
-                            days.add("Wednesday");
-                        }
-
-                        if (ds.child("thursdayOpen").equals("true")) {
-                            days.add("Thursday");
-                        }
-
-                        if (ds.child("fridayOpen").equals("true")) {
-                            days.add("Friday");
-                        }
-
-                        if (ds.child("saturdayOpen").equals("true")) {
-                            days.add("Tuesday");
-                        }
-
-                        if (ds.child("sundayOpen").equals("true")) {
-                            days.add("Sunday");
-                        }
-
-                    }
-
-                    System.out.println(days);
-
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-*/
-
-
-
+        
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 

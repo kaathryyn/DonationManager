@@ -57,6 +57,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
         firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("users");
 
 
+        //initialise charity spinner values
         charitySpinner = v.findViewById(R.id.charitySpinner);
         charityAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item);
         charityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -183,6 +184,41 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                 System.out.println(selectedCharity);
 
 
+                firebaseDatabase.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        timeSlotAdapter.clear();
+
+                        for(DataSnapshot ds : dataSnapshot.getChildren()) {
+
+                            String accountType = ds.child("accountType").getValue().toString();
+
+                            //if current entry has the same name as the selected charityspinner save open and close hours as int
+                            if (accountType.equals("Charity") && selectedCharity.equals(ds.child("charityName").getValue().toString())) {
+                                int charityOpen = Integer.parseInt(ds.child("openingHour").getValue().toString());
+                                int charityClose = Integer.parseInt(ds.child("closingHour").getValue().toString());
+
+                                //add hours to spinner
+                                for (int i = charityOpen; i < charityClose; i+=100) {
+
+                                    String padded = String.format("%04d", i);
+                                    timeSlotAdapter.add(padded);
+                                }
+
+                            }
+                        }
+                    }
+
+
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+
+                });
+
+
                 //clear data array
                 daySlotAdapter.clear();
 
@@ -258,42 +294,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                 break;
 
         }
-
-        firebaseDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                timeSlotAdapter.clear();
-
-                String charityName = charitySpinner.getSelectedItem().toString();
-
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-
-                    String accountType = ds.child("accountType").getValue().toString();
-
-                    //if current entry has the same name as the selected charityspinner save open and close hours as int
-                    if (accountType.equals("Charity") && charityName.equals(ds.child("charityName").getValue().toString())) {
-                        int charityOpen = Integer.parseInt(ds.child("openingHour").getValue().toString());
-                        int charityClose = Integer.parseInt(ds.child("closingHour").getValue().toString());
-
-                        //add hours to spinner
-                        for (int i = charityOpen; i < charityClose; i+=100) {
-
-                            String padded = String.format("%04d", i);
-                            timeSlotAdapter.add(padded);
-                        }
-
-                    }
-                }
-            }
-
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-
-        });
+        }
 
 
 
@@ -350,7 +351,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
             });
 */
 
-    }
+
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {

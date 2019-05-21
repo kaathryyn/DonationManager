@@ -187,7 +187,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
 
                 //clear data array
-                days.clear();
+                daySlotAdapter.clear();
 
                 //initialise spinner
 

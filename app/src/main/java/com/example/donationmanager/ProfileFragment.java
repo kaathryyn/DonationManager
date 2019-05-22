@@ -182,13 +182,13 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         String uId = user.getUid();
         int openingHour = Integer.parseInt(spinner3.getSelectedItem().toString());
         int closingHour = Integer.parseInt(spinner4.getSelectedItem().toString());
-        boolean mondayOpen = mon.isSelected();
-        boolean tuesdayOpen = tue.isSelected();
-        boolean wednesdayOpen = wed.isSelected();
-        boolean thursdayOpen = thu.isSelected();
-        boolean fridayOpen = fri.isSelected();;
-        boolean saturdayOpen = sat.isSelected();
-        boolean sundayOpen =  sun.isSelected();
+        boolean mondayOpen = mon.isChecked();
+        boolean tuesdayOpen = tue.isChecked();
+        boolean wednesdayOpen = wed.isChecked();
+        boolean thursdayOpen = thu.isChecked();
+        boolean fridayOpen = fri.isChecked();;
+        boolean saturdayOpen = sat.isChecked();
+        boolean sundayOpen =  sun.isChecked();
 
         CharityInformation charityInformation = new CharityInformation(charityName, address, city, postcode, state, phoneNumber, accountType, uId, openingHour, closingHour, mondayOpen, tuesdayOpen, wednesdayOpen, thursdayOpen, fridayOpen, saturdayOpen, sundayOpen, true);
 
@@ -286,8 +286,10 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                     Toast.makeText(getContext(), "Please enter a postcode", Toast.LENGTH_SHORT).show();
                 } else if (editPhoneNumber.getText().toString().isEmpty()) {
                     Toast.makeText(getContext(), "Please enter your phone number", Toast.LENGTH_SHORT).show();
-                } else if (!mon.isSelected() & (!tue.isSelected()) & (!wed.isSelected()) & (!thu.isSelected()) & (!fri  .isSelected()) & (!sat.isSelected()) & (!sun.isSelected())) {
+                } else if (!mon.isChecked() & !tue.isChecked() & !wed.isChecked() & !thu.isChecked() & !fri.isChecked() & !sat.isChecked() & !sun.isChecked()) {
                     Toast.makeText(getContext(), "Please select days you are open", Toast.LENGTH_SHORT).show();
+                } else if (spinner3.getPrompt().toString() == spinner4.getPrompt().toString()) {
+                    Toast.makeText(getContext(), "Please setup your opening and closing times", Toast.LENGTH_SHORT).show();
                 } else {
                     saveCharityInfo();
                     Fragment fragment = null;

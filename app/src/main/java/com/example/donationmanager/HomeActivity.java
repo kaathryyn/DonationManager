@@ -34,9 +34,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     Menu menu;
     MenuItem profile;
 
-
-
-
     //activity elements
     private TextView textViewUserEmail, textViewName;
     private Button buttonLogout;
@@ -64,9 +61,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         //reference childs info using User ID
         firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
 
-
-
-
+        //check if initial setup has been performed
         firebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -85,19 +80,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         System.out.println("First" + initialSetup);
 
-
+        // set name in menu after initial setup
         firebaseDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //check if user has made a profile
                 if (dataSnapshot.exists()) {
-                    if(dataSnapshot.child("accountType").getValue() == "Donor") {
+                    if (dataSnapshot.child("accountType").getValue() == "Donor") {
                         String firstName = dataSnapshot.child("firstName").getValue().toString();
                         String lastName = dataSnapshot.child("lastName").getValue().toString();
                         textViewName.setText(firstName + " " + lastName);
-                    }
-
-                    else if (dataSnapshot.child("accountType").getValue() == "Charity") {
+                    } else if (dataSnapshot.child("accountType").getValue() == "Charity") {
 
                         textViewName.setText(dataSnapshot.child("charityName").getValue().toString());
                         System.out.println(dataSnapshot.child("charityName").getValue().toString());

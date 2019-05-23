@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +30,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     //firebase auth object
     private FirebaseAuth firebaseAuth;
     private DatabaseReference firebaseDatabase;
+    String initialSetup;
+    Menu menu;
+    MenuItem profile;
+
 
 
 
@@ -43,7 +48,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         drawer = findViewById(R.id.drawer_layout);
 
@@ -60,6 +64,28 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         //reference childs info using User ID
         firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
 
+
+
+
+        firebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    initialSetup = dataSnapshot.child("initialSetup").getValue().toString();
+                    System.out.println("Initial setup " + initialSetup);
+                    profile.setTitle("Manage Profile");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        System.out.println("First" + initialSetup);
+
+
         firebaseDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -74,6 +100,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     else if (dataSnapshot.child("accountType").getValue() == "Charity") {
 
                         textViewName.setText(dataSnapshot.child("charityName").getValue().toString());
+                        System.out.println(dataSnapshot.child("charityName").getValue().toString());
                     }
                 }
             }
@@ -93,6 +120,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         //initialise view objects
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        menu = navigationView.getMenu();
+        profile = menu.findItem(R.id.nav_profile);
         View headerView = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
         textViewUserEmail = (TextView) headerView.findViewById(R.id.textViewUserEmail);
@@ -105,7 +134,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         //set default fragment to profile.
         if (savedInstanceState == null) {
 
+
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+
             navigationView.setCheckedItem(R.id.nav_profile);
         }
 
@@ -118,7 +149,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
 
             case R.id.nav_profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+                if (initialSetup.equals("false"))
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+                else
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ManageProfileFragment()).commit();
+
+
                 break;
 
             case R.id.nav_booking:

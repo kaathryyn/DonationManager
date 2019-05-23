@@ -79,14 +79,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists())
                         initialSetup = "true";
-                    System.out.println("CHECK" + dataSnapshot.exists());
-                    //System.out.println(initialSetup);
+                        profile.setTitle("Manage Account");
                     if (dataSnapshot.child("accountType").getValue().toString().equals("Donor")) {
                         System.out.println(dataSnapshot.child("accountType").getValue().toString());
                         String fName = dataSnapshot.child("firstName").getValue().toString();
                         textViewName.setText(fName);
                     }
-
                     else if (dataSnapshot.child("accountType").getValue().toString().equals("Charity")) {
                         System.out.println(dataSnapshot.child("accountType").getValue().toString());
                         String fName = dataSnapshot.child("charityName").getValue().toString();
@@ -113,6 +111,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //check if user has made a profile
                 if (dataSnapshot.exists()) {
+                    profile.setTitle("Manage Account");
                     if (dataSnapshot.child("accountType").getValue() == "Donor") {
                         String firstName = dataSnapshot.child("firstName").getValue().toString();
                         String lastName = dataSnapshot.child("lastName").getValue().toString();

@@ -4,11 +4,12 @@ import com.google.firebase.database.ServerValue;
 
 public class Booking {
 
-    private String bookingKey, charityName, description, donationType, furnitureType, dayName, timeSlot;
+    private String bookingKey, charityName, donorID, description, donationType, furnitureType, dayName, timeSlot;
     long timeStamp;
 
-    public Booking(String charityName, String description, String donationType, String furnitureType, String timeSlot, long timeStamp) {
+    public Booking(String charityName, String donorID, String description, String donationType, String furnitureType, String timeSlot, long timeStamp) {
         this.charityName = charityName;
+        this.donorID = donorID;
         this.description = description;
         this.donationType = donationType;
         this.furnitureType = furnitureType;

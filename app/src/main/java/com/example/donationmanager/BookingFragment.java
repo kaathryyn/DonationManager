@@ -18,6 +18,7 @@ import android.widget.Spinner;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -45,6 +46,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     CalendarView calendarView;
 
     int count;
+    String uId;
     String selectedCharity;
     String selectedCharityID;
     long bookingTimeStamp;
@@ -68,6 +70,8 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
         //setup and initilaise firebase auth and firebasedb
         firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        uId = user.getUid();
         firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("users");
 
 
@@ -105,7 +109,6 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
             }
 
         });
-
 
         charitySpinner.setOnItemSelectedListener(this);
 
@@ -147,6 +150,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
         //creates new booking object
         Booking booking = new Booking(
                 charitySpinner.getSelectedItem().toString(),
+                uId,
                 descriptionEdittext.getText().toString(),
                 donationTypeSpinner.getSelectedItem().toString(),
                 furnitureTypeSpinner.getSelectedItem().toString(),

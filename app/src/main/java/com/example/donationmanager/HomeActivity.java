@@ -51,35 +51,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         //reference childs info using User ID
         firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
 
-
-
-
-        if(firebaseAuth != null){
-
-            firebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists())
-                        initialSetup = "true";
-                    System.out.println("checkout" + dataSnapshot.exists());
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-
-
-        }
-
-
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
             initialSetup = extras.getString("initialValue", "true");
-            System.out.println("VALUES PASSED " + extras.getString("initialValue", "true") );
+            System.out.println("VALUES PASSED " + extras.getString("initialValue") );
         }
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -93,7 +70,24 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        if(firebaseAuth != null){
 
+            firebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists())
+                        initialSetup = "true";
+                    System.out.println("checkout" + dataSnapshot.exists());
+                    System.out.println(initialSetup);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        }
 
         //check if initial setup has been performed
 
@@ -144,9 +138,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         //set default fragment to profile.
         if (savedInstanceState == null) {
-
-            if (initialSetup.equals("true"))
+            System.out.println("setting default fragment");
+            if (initialSetup.equals("true")) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ManageProfileFragment()).commit();
+                profile.setTitle("Manage Account");
+            }
             else if (initialSetup.equals("null"))
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
 

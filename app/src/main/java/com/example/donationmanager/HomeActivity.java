@@ -54,7 +54,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
             initialSetup = extras.getString("initialValue", "true");
-            System.out.println("VALUES PASSED " + extras.getString("initialValue") );
         }
 
 
@@ -72,13 +71,29 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         if(firebaseAuth != null){
 
-            firebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseAuth.getCurrentUser().getUid());
+
+
+            firebaseDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists())
                         initialSetup = "true";
-                    System.out.println("checkout" + dataSnapshot.exists());
-                    System.out.println(initialSetup);
+                    System.out.println("CHECK" + dataSnapshot.exists());
+                    //System.out.println(initialSetup);
+                    if (dataSnapshot.child("accountType").getValue().toString().equals("Donor")) {
+                        System.out.println(dataSnapshot.child("accountType").getValue().toString());
+                        String fName = dataSnapshot.child("firstName").getValue().toString();
+                        textViewName.setText(fName);
+                    }
+
+                    else if (dataSnapshot.child("accountType").getValue().toString().equals("Charity")) {
+                        System.out.println(dataSnapshot.child("accountType").getValue().toString());
+                        String fName = dataSnapshot.child("charityName").getValue().toString();
+                        textViewName.setText(fName);
+                    }
+
+
                 }
 
                 @Override
@@ -167,11 +182,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_booking:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new BookingFragment()).commit();
+                if (initialSetup.equals("true"))
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new BookingFragment()).commit();
                 break;
 
             case R.id.nav_search:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchFragment()).commit();
+                if (initialSetup.equals("true"))
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchFragment()).commit();
                 break;
 
         }

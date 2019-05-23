@@ -5,27 +5,23 @@ import com.google.firebase.database.ServerValue;
 public class Booking {
 
     private String bookingKey, charityName, description, donationType, furnitureType, dayName, timeSlot;
+    long timeStamp;
 
-    public Booking(String charityName, String description, String donationType, String furnitureType, String dayName, String timeSlot) {
+    public Booking(String charityName, String description, String donationType, String furnitureType, String timeSlot, long timeStamp) {
         this.charityName = charityName;
         this.description = description;
         this.donationType = donationType;
         this.furnitureType = furnitureType;
-        this.dayName = dayName;
         this.timeSlot = timeSlot;
+        this.timeStamp = timeStamp;
     }
 
     public Booking() {
 
     }
 
-    public String getDayName() {
-        return dayName;
-    }
 
-    public void setDayName(String dayName) {
-        this.dayName = dayName;
-    }
+
 
     public String getTimeSlot() {
         return timeSlot;

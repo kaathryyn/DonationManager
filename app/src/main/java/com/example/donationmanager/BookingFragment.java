@@ -147,8 +147,8 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                 descriptionEdittext.getText().toString(),
                 donationTypeSpinner.getSelectedItem().toString(),
                 furnitureTypeSpinner.getSelectedItem().toString(),
-                daySlotSpinner.getSelectedItem().toString(),
-                timeSlotSpinner.getSelectedItem().toString()
+                timeSlotSpinner.getSelectedItem().toString(),
+                bookingTimeStamp
         );
 
         addBooking(booking);

@@ -288,7 +288,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                     Toast.makeText(getContext(), "Please enter your phone number", Toast.LENGTH_SHORT).show();
                 } else if (!mon.isChecked() & !tue.isChecked() & !wed.isChecked() & !thu.isChecked() & !fri.isChecked() & !sat.isChecked() & !sun.isChecked()) {
                     Toast.makeText(getContext(), "Please select days you are open", Toast.LENGTH_SHORT).show();
-                } else if (spinner3.getPrompt().toString() == spinner4.getPrompt().toString()) {
+                } else if (spinner3.getSelectedItem().toString() == spinner4.getSelectedItem().toString() | spinner3.getSelectedItemPosition() > spinner4.getSelectedItemPosition()) {
                     Toast.makeText(getContext(), "Please setup your opening and closing times", Toast.LENGTH_SHORT).show();
                 } else {
                     saveCharityInfo();

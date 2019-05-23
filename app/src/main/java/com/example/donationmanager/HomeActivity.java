@@ -30,7 +30,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     //firebase auth object
     private FirebaseAuth firebaseAuth;
     private DatabaseReference firebaseDatabase;
-    String initialSetup;
+    String initialSetup = "null";
     Menu menu;
     MenuItem profile;
 
@@ -40,6 +40,47 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //initialise firebase object
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        //User ID of logged in user
+        String uid = firebaseAuth.getCurrentUser().getUid();
+        System.out.println(uid);
+
+        //reference childs info using User ID
+        firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
+
+
+
+
+        if(firebaseAuth != null){
+
+            firebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists())
+                        initialSetup = "true";
+                    System.out.println("checkout" + dataSnapshot.exists());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+
+        }
+
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            initialSetup = extras.getString("initialValue", "true");
+            System.out.println("VALUES PASSED " + extras.getString("initialValue", "true") );
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -52,33 +93,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        //initialise firebase object
-        firebaseAuth = FirebaseAuth.getInstance();
 
-        //User ID of logged in user
-        String uid = firebaseAuth.getCurrentUser().getUid();
-
-        //reference childs info using User ID
-        firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
 
         //check if initial setup has been performed
-        firebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    initialSetup = dataSnapshot.child("initialSetup").getValue().toString();
-                    System.out.println("Initial setup " + initialSetup);
-                    profile.setTitle("Manage Profile");
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        System.out.println("First" + initialSetup);
 
         // set name in menu after initial setup
         firebaseDatabase.addValueEventListener(new ValueEventListener() {
@@ -127,8 +145,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         //set default fragment to profile.
         if (savedInstanceState == null) {
 
+            if (initialSetup.equals("true"))
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ManageProfileFragment()).commit();
+            else if (initialSetup.equals("null"))
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+
 
             navigationView.setCheckedItem(R.id.nav_profile);
         }
@@ -146,8 +168,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
                 else
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ManageProfileFragment()).commit();
-
-
                 break;
 
             case R.id.nav_booking:

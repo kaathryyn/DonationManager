@@ -45,9 +45,11 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     private TextView tvOpenHours, tvCloseHours, tvOpenDays;
     //initialise db reference
     private DatabaseReference databaseReference;
+    private DatabaseReference dbRef;
     private DatabaseReference dbDonors;
     private DatabaseReference dbCharity;
     private FirebaseAuth firebaseAuth;
+    private FirebaseAuth fbAuth;
     int accountPosition;
     Spinner spinner1, spinner2, spinner3, spinner4;
 
@@ -117,38 +119,33 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         spinner4.setAdapter(adapter3);
         spinner4.setOnItemSelectedListener(this);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        String userID = user.getUid();
+        // QQuery initialSetup
+
+//        dbRef = FirebaseDatabase.getInstance().getReference();
+//        fbAuth = FirebaseAuth.getInstance();
+//        FirebaseUser user = fbAuth.getCurrentUser();
+//        String userID = user.getUid();
+//
+//        Log.i("Query", "------------------------------------------------");
+//        Log.i("Query-UserID-1", userID);
+//        Log.i("Query-UserID-2", dbRef.child("users").child(userID).toString());
+//        Log.i("Query-UserID-3", String.valueOf(dbRef.child("users").child(userID).toString().equals("https://donationmanager-29eca.firebaseio.com/users/3kRZuRLhdIatLCGoZvZJUxHFxk13")));
+//        Log.i("Query-InitialSetup", dbRef.child("users").child(userID).child("initialSetup").toString());
+//        Log.i("Query-InitialSetup-2", String.valueOf(dbRef.child("users").child(userID).child("initialSetup").toString().equals("https://donationmanager-29eca.firebaseio.com/users/3kRZuRLhdIatLCGoZvZJUxHFxk13/initialSetup")));
+//        Log.i("Query-InitialSetup-Test", String.valueOf(dbRef.child("users").child(userID).child("initialSetup").equals(dbRef.child("users").child(userID).child("initialSetup"))));
+//        Log.i("Query-InitSetup-Test2", String.valueOf(!(dbRef.child("users").child(userID).child("initialSetup").equals(dbRef.child("users").child(userID).child("initialSetup")))));
+//
+//        Query query = FirebaseDatabase.getInstance().getReference("users")
+//                .orderByChild("uId")
+//                .equalTo(userID);
+//
+//        query.addListenerForSingleValueEvent(eventListener);
+//
+//        Log.i("Query-InitialSetup", String.valueOf(query));
 
         //hide or show fields based on account type
-        if (databaseReference.child("users").child(userID).child("initialSetup").equals(false)) {
-            accountPosition = spinner1.getSelectedItemPosition() + 1;
-            if (spinner1.getSelectedItemPosition() + 1 == 1) {
-                editCharityName.setVisibility(View.GONE);
-                tvOpenDays.setVisibility(View.GONE);
-                tvCloseHours.setVisibility(View.GONE);
-                tvOpenHours.setVisibility(View.GONE);
-                spinner4.setVisibility(View.GONE);
-                spinner3.setVisibility(View.GONE);
-                mon.setVisibility(View.INVISIBLE);
-                tue.setVisibility(View.INVISIBLE);
-                wed.setVisibility(View.INVISIBLE);
-                thu.setVisibility(View.INVISIBLE);
-                fri.setVisibility(View.INVISIBLE);
-                sat.setVisibility(View.INVISIBLE);
-                sun.setVisibility(View.INVISIBLE);
-
-
-            } else {
-                editFirstName.setVisibility(v.GONE);
-                editLastName.setVisibility(v.GONE);
-            }
-        }
-        else {
-            editFirstName.setVisibility(v.GONE);
-            editLastName.setVisibility(v.GONE);
+        accountPosition = spinner1.getSelectedItemPosition() + 1;
+        if (spinner1.getSelectedItemPosition() + 1 == 1) {
             editCharityName.setVisibility(View.GONE);
             tvOpenDays.setVisibility(View.GONE);
             tvCloseHours.setVisibility(View.GONE);
@@ -162,6 +159,12 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             fri.setVisibility(View.INVISIBLE);
             sat.setVisibility(View.INVISIBLE);
             sun.setVisibility(View.INVISIBLE);
+
+
+        }
+        else {
+            editFirstName.setVisibility(v.GONE);
+            editLastName.setVisibility(v.GONE);
         }
         return v;
     }
@@ -222,9 +225,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-
-
-        if(parent.getSelectedItemPosition() == 0) {
+        if (parent.getSelectedItemPosition() == 0) {
             editCharityName.setVisibility(View.GONE);
             editFirstName.setVisibility(View.VISIBLE);
             editLastName.setVisibility(View.VISIBLE);
@@ -242,7 +243,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             spinner4.setVisibility(View.GONE);
             spinner3.setVisibility(View.GONE);
         }
-
         else if (parent.getSelectedItemPosition() == 1) {
             editFirstName.setVisibility(View.GONE);
             editLastName.setVisibility(View.GONE);
@@ -260,10 +260,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
             spinner4.setVisibility(View.VISIBLE);
             spinner3.setVisibility(View.VISIBLE);
-
-
-
-
         }
 
         String text = parent.getItemAtPosition(position).toString();
@@ -304,4 +300,20 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
+//    ValueEventListener eventListener = new ValueEventListener() {
+//        @Override
+//        public void onDataChange(DataSnapshot dataSnapshot) {
+//            if(spinner1.getSelectedItemPosition() == 0) {
+//                DonorInformation donorInfo = dataSnapshot.getValue(DonorInformation.class);
+//            }
+//            else if(spinner1.getSelectedItemPosition() == 1) {
+//                CharityInformation charityInfo = dataSnapshot.getValue(CharityInformation.class);
+//            }
+//        }
+//
+//        @Override
+//        public void onCancelled(DatabaseError databaseError) {
+//        }
+//    };
 }

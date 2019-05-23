@@ -16,6 +16,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -23,8 +28,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView textViewSignup;
+    String initialSetup;
 
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference firebaseDatabase;
     private ProgressDialog progressDialog;
 
     @Override
@@ -34,11 +41,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+
+
         if(firebaseAuth.getCurrentUser() != null) {
-            //Home activity here
+            firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseAuth.getUid());
+            //check if initial setup has been performed
+            firebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        initialSetup = dataSnapshot.child("initialSetup").getValue().toString();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
 
             finish();
-            startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+            Intent i = new Intent(getApplicationContext(),HomeActivity.class);
+            i.putExtra("initialSetup", initialSetup);
+            startActivity(i);
         }
 
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
@@ -86,8 +111,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 if(task.isSuccessful()) {
                     //start app
-                    finish();
-                    startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+
+                    firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseAuth.getUid());
+                    //check if initial setup has been performed
+                    firebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                initialSetup = dataSnapshot.child("initialSetup").getValue().toString();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    if(initialSetup != null) {
+                        finish();
+                        Intent i = new Intent(getApplicationContext(), HomeActivity.class);
+                        i.putExtra("initialSetup", initialSetup);
+                        startActivity(i);
+                    }
+                     else
+                         startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+
+
                 } else {
                     //display fail message
                     Toast.makeText(LoginActivity.this,"Incorrect email address or password. Please try again.",Toast.LENGTH_LONG).show();

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,16 +38,21 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     private Button btnSubmit;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference firebaseDatabase;
-    Boolean[] days = new Boolean[] {false,false,false,false,false,false,false};
+    Boolean[] days = new Boolean[]{false, false, false, false, false, false, false};
     ArrayAdapter<String> charityAdapter, timeSlotAdapter;
 
     Calendar lastSelectedCalendar = null;
     CalendarView calendarView;
 
-
+    int count;
     String selectedCharity;
     String selectedCharityID;
     long bookingTimeStamp;
+    int charityOpen;
+    int charityClose;
+    String charityOpenString;
+    String charityCloseString;
+    Boolean clash;
 
     @Nullable
     @Override
@@ -58,7 +64,6 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
         calendarView = (CalendarView) v.findViewById(R.id.calenderView);
         lastSelectedCalendar = Calendar.getInstance();
         calendarView.setMinDate(lastSelectedCalendar.getTimeInMillis() - 1000);
-
 
 
         //setup and initilaise firebase auth and firebasedb
@@ -74,7 +79,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
         charitySpinner.setAdapter(
                 new NothingSelectedSpinnerAdapter(
                         charityAdapter,
-                        R.layout.contact_spinner_row_nothing_selected,getContext()));
+                        R.layout.contact_spinner_row_nothing_selected, getContext()));
 
         //query db for all available charity names and populate chairtyspinner with data
         firebaseDatabase.addValueEventListener(new ValueEventListener() {
@@ -82,7 +87,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
 
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     String accountType = ds.child("accountType").getValue().toString();
 
                     if (accountType.equals("Charity")) {
@@ -92,7 +97,6 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                     }
                 }
             }
-
 
 
             @Override
@@ -107,18 +111,17 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
 
         donationTypeSpinner = v.findViewById(R.id.donationTypeSpinner);
-        ArrayAdapter<CharSequence> adapterDonationType = ArrayAdapter.createFromResource(v.getContext(),R.array.donationType,android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapterDonationType = ArrayAdapter.createFromResource(v.getContext(), R.array.donationType, android.R.layout.simple_spinner_item);
         adapterDonationType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         donationTypeSpinner.setAdapter(adapterDonationType);
         donationTypeSpinner.setOnItemSelectedListener(this);
 
 
         furnitureTypeSpinner = v.findViewById(R.id.furnitureTypeSpinner);
-        ArrayAdapter<CharSequence> adapterFurnitureType = ArrayAdapter.createFromResource(v.getContext(),R.array.furnitureType,android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapterFurnitureType = ArrayAdapter.createFromResource(v.getContext(), R.array.furnitureType, android.R.layout.simple_spinner_item);
         adapterFurnitureType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         furnitureTypeSpinner.setAdapter(adapterFurnitureType);
         furnitureTypeSpinner.setOnItemSelectedListener(this);
-
 
 
         timeSlotSpinner = v.findViewById(R.id.timeSlotSpinner);
@@ -152,7 +155,19 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
         );
 
         addBooking(booking);
+        Fragment fragment = null;
+        fragment = new ManageProfileFragment();
+        replaceFragment(fragment);
 
+
+
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
 
@@ -176,6 +191,9 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
             }
         });
 
+
+
+
     }
 
     @Override
@@ -190,41 +208,6 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                     //find chosen charity
                     selectedCharity = parent.getSelectedItem().toString();
                     System.out.println(selectedCharity);
-
-
-                    firebaseDatabase.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            timeSlotAdapter.clear();
-
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-
-                                String accountType = ds.child("accountType").getValue().toString();
-
-                                //if current entry has the same name as the selected charityspinner save open and close hours as int
-                                if (accountType.equals("Charity") && selectedCharity.equals(ds.child("charityName").getValue().toString())) {
-                                    int charityOpen = Integer.parseInt(ds.child("openingHour").getValue().toString());
-                                    int charityClose = Integer.parseInt(ds.child("closingHour").getValue().toString());
-
-                                    //add hours to spinner
-                                    for (int i = charityOpen; i < charityClose; i += 100) {
-
-                                        String padded = String.format("%04d", i);
-                                        timeSlotAdapter.add(padded);
-                                    }
-
-                                }
-                            }
-                        }
-
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-
-                    });
-
 
                     //clear data array
                     Arrays.fill(days, false);
@@ -248,6 +231,11 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                                     if (dscharityName.equals(selectedCharity)) {
                                         //assigning charity id
                                         selectedCharityID = ds.getKey();
+                                        charityOpen = Integer.parseInt(ds.child("openingHour").getValue().toString());
+                                        charityOpenString = ds.child("openingHour").getValue().toString();
+                                        charityClose = Integer.parseInt(ds.child("closingHour").getValue().toString());
+                                        charityCloseString = ds.child("closingHour").getValue().toString();
+
 
                                         //find available days
 
@@ -325,28 +313,166 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                                 checkCalender.set(Calendar.SECOND, 0);
                                 checkCalender.set(Calendar.MILLISECOND, 0);
                                 bookingTimeStamp = checkCalender.getTimeInMillis();
-                                System.out.println(bookingTimeStamp);
+
+
+                                firebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        timeSlotAdapter.clear();
+
+                                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+
+                                            String accountType = ds.child("accountType").getValue().toString();
+
+                                            //if current entry has the same name as the selected charityspinner save open and close hours as int
+                                            if (accountType.equals("Charity") && selectedCharity.equals(ds.child("charityName").getValue().toString())) {
+
+
+                                                //add hours to spinner
+                                                //for (count = charityOpen; count < charityClose; count += 100) {
+                                                //clash = false;
+                                                //System.out.println("what is being iterated " + count);
+                                                timeSlotAdapter.clear();
+                                                DatabaseReference bookingDB = FirebaseDatabase.getInstance().getReference().child("Bookings");
+                                                bookingDB.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                        timeSlotAdapter.clear();
+                                                        for (count = charityOpen; count < charityClose; count += 100) {
+                                                            clash = false;
+                                                            System.out.println("1 count: " + count);
+                                                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+
+                                                                if (ds.child("charityName").getValue().toString().equals(selectedCharity)) {
+
+                                                                    if (ds.child("timeStamp").getValue().toString().equals(Long.toString(bookingTimeStamp))) {
+
+                                                                        if (count == Integer.parseInt(ds.child("timeSlot").getValue().toString())) {
+                                                                            clash = true;
+                                                                        }
+
+                                                                    }
+                                                                }
+
+                                                            }
+                                                            if (!clash) {
+                                                                String padded = String.format("%04d", count);
+                                                                timeSlotAdapter.add(padded);
+                                                            }
+
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                    }
+                                                });
+
+
+                                                //}
+
+                                            }
+                                        }
+                                    }
+
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+
+                                });
 
                             }
 
 
                         }
+
+
+                    });
+
+
+                    firebaseDatabase.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            timeSlotAdapter.clear();
+
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+
+                                String accountType = ds.child("accountType").getValue().toString();
+
+                                //if current entry has the same name as the selected charityspinner save open and close hours as int
+                                if (accountType.equals("Charity") && selectedCharity.equals(ds.child("charityName").getValue().toString())) {
+
+
+                                    //add hours to spinner
+                                    for (count = charityOpen; count < charityClose; count += 100) {
+                                        clash = false;
+
+                                        DatabaseReference bookingDB = FirebaseDatabase.getInstance().getReference().child("Bookings");
+                                        bookingDB.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+
+                                                    if (ds.child("charityName").getValue().toString().equals(selectedCharity)) {
+                                                        System.out.println("Charity name checkpoint");
+
+                                                        if (ds.child("timeStamp").getValue().toString().equals(bookingTimeStamp)) {
+                                                            System.out.println("timestamp checkpoint");
+
+                                                            if (ds.child("timeSlot").getValue().toString().equals(Integer.toString(count))) {
+                                                                System.out.println("timeslot checkpoint");
+                                                                clash = true;
+                                                            }
+
+
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+
+                                        if (!clash) {
+                                            String padded = String.format("%04d", count);
+                                            timeSlotAdapter.add(padded);
+                                        }
+
+                                    }
+
+                                }
+                            }
+                        }
+
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+
                     });
 
 
                     break;
 
                 case R.id.donationTypeSpinner:
-                        if(position == 0) {
+                    if (position == 0) {
 
-                        }
-                        break;
+                    }
+                    break;
 
 
             }
-    }
         }
-        
+    }
+
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 

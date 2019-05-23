@@ -77,21 +77,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             firebaseDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists())
+                    if (dataSnapshot.exists()) {
                         initialSetup = "true";
                         profile.setTitle("Manage Account");
-                    if (dataSnapshot.child("accountType").getValue().toString().equals("Donor")) {
-                        System.out.println(dataSnapshot.child("accountType").getValue().toString());
-                        String fName = dataSnapshot.child("firstName").getValue().toString();
-                        textViewName.setText(fName);
-                    }
-                    else if (dataSnapshot.child("accountType").getValue().toString().equals("Charity")) {
-                        System.out.println(dataSnapshot.child("accountType").getValue().toString());
-                        String fName = dataSnapshot.child("charityName").getValue().toString();
-                        textViewName.setText(fName);
-                    }
 
+                        if (dataSnapshot.child("accountType").getValue().toString().equals("Donor")) {
+                            System.out.println(dataSnapshot.child("accountType").getValue().toString());
+                            String fName = dataSnapshot.child("firstName").getValue().toString();
+                            textViewName.setText(fName);
+                        } else if (dataSnapshot.child("accountType").getValue().toString().equals("Charity")) {
+                            System.out.println(dataSnapshot.child("accountType").getValue().toString());
+                            String fName = dataSnapshot.child("charityName").getValue().toString();
+                            textViewName.setText(fName);
+                        }
 
+                    }
                 }
 
                 @Override

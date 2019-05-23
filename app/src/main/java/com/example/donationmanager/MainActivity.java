@@ -81,6 +81,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
+        //checks if email address is in correct format
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Invalid email address. Please try again", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         //checks & informs user that password must be at least 8 characters
         if(!PASSWORD_PATTERN.matcher(password).matches()) {
             Toast.makeText(this, "Password must be at least 8 characters", Toast.LENGTH_LONG).show();
@@ -117,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         }else{
                             //display fail message
-                            Toast.makeText(MainActivity.this,"Invalid email address",Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this,"An account already exists. Please use a different email address",Toast.LENGTH_LONG).show();
                         }
                         progressDialog.dismiss();
                     }

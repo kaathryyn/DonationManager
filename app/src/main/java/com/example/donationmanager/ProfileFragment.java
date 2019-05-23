@@ -154,6 +154,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
 
 
+
         }
         else {
             editFirstName.setVisibility(v.GONE);
@@ -179,7 +180,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
         DonorInformation donorInformation = new DonorInformation(firstName, lastName, address,city, postcode, state, phoneNumber, accountType, uId, true);
 
-
         databaseReference.child("users").child(uId).setValue(donorInformation);
         Toast.makeText(getContext(), "Donor info saved", Toast.LENGTH_SHORT).show();
     }
@@ -201,10 +201,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         int openingHour = Integer.parseInt(spinner3.getSelectedItem().toString());
         int closingHour = Integer.parseInt(spinner4.getSelectedItem().toString());
 
-
-
         CharityInformation charityInformation = new CharityInformation(charityName, address, city, postcode, state, phoneNumber, accountType, uId, openingHour, closingHour, mondayOpen, tuesdayOpen, wednesdayOpen, thursdayOpen, fridayOpen, saturdayOpen, sundayOpen, true);
-
 
         databaseReference.child("users").child(uId).setValue(charityInformation);
         Toast.makeText(getContext(), "Charity information saved", Toast.LENGTH_SHORT).show();
@@ -212,8 +209,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-
 
         if(parent.getSelectedItemPosition() == 0) {
             editCharityName.setVisibility(View.GONE);
@@ -268,29 +263,11 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
     @Override
     public void onClick(View v) {
-
-        if(v == buttonSave) {
-
-            if(spinner1.getSelectedItemPosition() == 0) {
-                saveUserInfo();
-            }
-            else if(spinner1.getSelectedItemPosition() == 1) {
-                saveCharityInfo();
-            }
-            
-            Fragment fragment = null;
-            fragment = new BookingFragment();
-            replaceFragment(fragment);
-            
-            
-        }
-
         if(v == mon ) {
 
             if(mon.isChecked()) {
                 mondayOpen = true;
-            }
-            else {
+            } else {
                 mondayOpen = false;
             }
         }
@@ -299,8 +276,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
             if(tue.isChecked()) {
                 tuesdayOpen = true;
-            }
-            else {
+            } else {
                 tuesdayOpen = false;
             }
         }
@@ -318,8 +294,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
             if(thu.isChecked()) {
                 thursdayOpen = true;
-            }
-            else {
+            } else {
                 thursdayOpen = false;
             }
         }
@@ -336,8 +311,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
             if(sat.isChecked()) {
                 saturdayOpen = true;
-            }
-            else {
+            } else {
                 saturdayOpen = false;
             }
         }
@@ -345,18 +319,57 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
             if(sun.isChecked()) {
                 sundayOpen = true;
-            }
-            else {
+            } else {
                 sundayOpen = false;
             }
         }
 
+        if(v == buttonSave) {
 
-
-
+            if(spinner1.getSelectedItemPosition() == 0) {
+                if (editFirstName.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter your first name", Toast.LENGTH_SHORT).show();
+                } else if (editLastName.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter your last name", Toast.LENGTH_SHORT).show();
+                } else if (editAddress.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter your address", Toast.LENGTH_SHORT).show();
+                } else if (editCity.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter a city", Toast.LENGTH_SHORT).show();
+                } else if (editPostcode.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter a postcode", Toast.LENGTH_SHORT).show();
+                } else if (editPhoneNumber.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter your phone number", Toast.LENGTH_SHORT).show();
+                } else {
+                    saveUserInfo();
+                    Fragment fragment = null;
+                    fragment = new BookingFragment();
+                    replaceFragment(fragment);
+                }
+            }
+            else if(spinner1.getSelectedItemPosition() == 1) {
+                if (editCharityName.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter the name of your charity", Toast.LENGTH_SHORT).show();
+                } else if (editAddress.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter your address", Toast.LENGTH_SHORT).show();
+                } else if (editCity.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter a city", Toast.LENGTH_SHORT).show();
+                } else if (editPostcode.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter a postcode", Toast.LENGTH_SHORT).show();
+                } else if (editPhoneNumber.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter your phone number", Toast.LENGTH_SHORT).show();
+                } else if (!mon.isChecked() & !tue.isChecked() & !wed.isChecked() & !thu.isChecked() & !fri.isChecked() & !sat.isChecked() & !sun.isChecked()) {
+                    Toast.makeText(getContext(), "Please select days you are open", Toast.LENGTH_SHORT).show();
+                } else if (spinner3.getSelectedItem().toString() == spinner4.getSelectedItem().toString() | spinner3.getSelectedItemPosition() > spinner4.getSelectedItemPosition()) {
+                    Toast.makeText(getContext(), "Please setup your opening and closing times", Toast.LENGTH_SHORT).show();
+                } else {
+                    saveCharityInfo();
+                    Fragment fragment = null;
+                    fragment = new BookingFragment();
+                    replaceFragment(fragment);
+                }
+            }
+        }
     }
-
-
 
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -365,5 +378,3 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         transaction.commit();
     }
 }
-
-

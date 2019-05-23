@@ -189,7 +189,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="20dp"
-        android:text="Open Hours"
+        android:text="Opening Time"
         android:textSize="15dp"
         app:layout_constraintEnd_toStartOf="@+id/tvCloseHours"
         app:layout_constraintHorizontal_bias="0.0"
@@ -204,7 +204,7 @@
         android:layout_marginStart="212dp"
         android:layout_marginLeft="212dp"
         android:layout_marginTop="20dp"
-        android:text="Close Hours"
+        android:text="Closing Time"
         android:textSize="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/accountTypeSpinner" />

@@ -45,6 +45,17 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     int accountPosition;
     Spinner spinner1, spinner2, spinner3, spinner4;
 
+    boolean mondayOpen;
+    boolean tuesdayOpen;
+    boolean wednesdayOpen;
+    boolean thursdayOpen;
+    boolean fridayOpen;
+    boolean saturdayOpen;
+    boolean sundayOpen;
+
+
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -78,12 +89,19 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         //initialise days checkboxes
 
         mon = (CheckBox) v.findViewById(R.id.checkbox_monday);
+        mon.setOnClickListener(this);
         tue = (CheckBox) v.findViewById(R.id.checkbox_tuesday);
+        tue.setOnClickListener(this);
         wed = (CheckBox) v.findViewById(R.id.checkbox_wednesday);
+        wed.setOnClickListener(this);
         thu = (CheckBox) v.findViewById(R.id.checkbox_thursday);
+        thu.setOnClickListener(this);
         fri = (CheckBox) v.findViewById(R.id.checkbox_friday);
+        fri.setOnClickListener(this);
         sat = (CheckBox) v.findViewById(R.id.checkbox_saturday);
+        sat.setOnClickListener(this);
         sun = (CheckBox) v.findViewById(R.id.checkbox_sunday);
+        sun.setOnClickListener(this);
 
 
 
@@ -182,13 +200,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         String uId = user.getUid();
         int openingHour = Integer.parseInt(spinner3.getSelectedItem().toString());
         int closingHour = Integer.parseInt(spinner4.getSelectedItem().toString());
-        boolean mondayOpen = mon.isChecked();
-        boolean tuesdayOpen = tue.isChecked();
-        boolean wednesdayOpen = wed.isChecked();
-        boolean thursdayOpen = thu.isChecked();
-        boolean fridayOpen = fri.isChecked();;
-        boolean saturdayOpen = sat.isChecked();
-        boolean sundayOpen =  sun.isChecked();
 
         CharityInformation charityInformation = new CharityInformation(charityName, address, city, postcode, state, phoneNumber, accountType, uId, openingHour, closingHour, mondayOpen, tuesdayOpen, wednesdayOpen, thursdayOpen, fridayOpen, saturdayOpen, sundayOpen, true);
 
@@ -252,6 +263,66 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
     @Override
     public void onClick(View v) {
+        if(v == mon ) {
+
+            if(mon.isChecked()) {
+                mondayOpen = true;
+            } else {
+                mondayOpen = false;
+            }
+        }
+
+        if(v == tue ) {
+
+            if(tue.isChecked()) {
+                tuesdayOpen = true;
+            } else {
+                tuesdayOpen = false;
+            }
+        }
+
+        if(v == wed ) {
+
+            if(wed.isChecked()) {
+                wednesdayOpen = true;
+            }
+            else {
+                wednesdayOpen = false;
+            }
+        }
+        if(v == thu ) {
+
+            if(thu.isChecked()) {
+                thursdayOpen = true;
+            } else {
+                thursdayOpen = false;
+            }
+        }
+        if(v == fri ) {
+
+            if(fri.isChecked()) {
+                fridayOpen = true;
+            }
+            else {
+                fridayOpen = false;
+            }
+        }
+        if(v == sat ) {
+
+            if(sat.isChecked()) {
+                saturdayOpen = true;
+            } else {
+                saturdayOpen = false;
+            }
+        }
+        if(v == sun ) {
+
+            if(sun.isChecked()) {
+                sundayOpen = true;
+            } else {
+                sundayOpen = false;
+            }
+        }
 
         if(v == buttonSave) {
 
@@ -307,4 +378,3 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         transaction.commit();
     }
 }
-

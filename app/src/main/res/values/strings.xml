@@ -51,9 +51,26 @@
     </string-array>
 
     <string name="state_label">State</string>
+
     <string-array name="donationType">
         <item>Pick Up</item>
         <item>Drop Off</item>
+    </string-array>
+
+    <string-array name="furnitureType">
+        <item>Chair</item>
+        <item>Table</item>
+        <item>Sofa</item>
+        <item>Shelf</item>
+        <item>Cabinet</item>
+        <item>Bed</item>
+        <item>Drawer</item>
+    </string-array>
+
+    <string-array name="timeSlot">
+        <item>Morning</item>
+        <item>Afternoon</item>
+        <item>Evening</item>
     </string-array>
 
 </resources>

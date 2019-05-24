@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.text.TextUtils;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -351,4 +352,28 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+//    public boolean errorChecking() {
+////        private Spinner charitySpinner, donationTypeSpinner, furnitureTypeSpinner, timeSlotSpinner, daySlotSpinner;
+////        private EditText descriptionEdittext;
+////        private Button btnSubmit;
+////        private FirebaseAuth firebaseAuth;
+////        private DatabaseReference firebaseDatabase;
+////        Boolean[] days = new Boolean[] {false,false,false,false,false,false,false};
+////        ArrayAdapter<String> charityAdapter, timeSlotAdapter;
+////
+////        Calendar lastSelectedCalendar = null;
+////        CalendarView calendarView;
+////
+////
+////        String selectedCharity;
+////        String selectedCharityID;
+////        long bookingTimeStamp;
+//
+//
+//        if (TextUtils.isEmpty(descriptionEdittext.getText().toString())) {
+//            return false;
+//        }
+//        return true;
+//    }
 }

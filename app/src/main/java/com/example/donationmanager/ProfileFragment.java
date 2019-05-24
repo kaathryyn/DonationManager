@@ -48,7 +48,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     private String accountType;
     private TextView tvOpenHours, tvCloseHours, tvOpenDays;
     //initialise db reference
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseReference, databaseReference1;
     private FirebaseAuth firebaseAuth;
     int accountPosition;
     Spinner spinner1, spinner2, spinner3, spinner4;
@@ -70,16 +70,19 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference1 = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseAuth.getCurrentUser().getUid());
+
+
 
 
         if(firebaseAuth !=null){
-            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    if (dataSnapshot.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("initialSetup").getValue().toString().equals("true")) {
+                    if (dataSnapshot.exists()) {
                         Fragment fragment = null;
                         fragment = new ManageProfileFragment();
                         replaceFragment(fragment);

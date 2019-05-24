@@ -18,6 +18,7 @@
         android:id="@+id/textViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-smallcaps"
         android:text="NAME"
         android:textColor="#FFFF"
         android:textSize="20dp"/>
@@ -26,6 +27,7 @@
         android:id="@+id/textViewUserEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-smallcaps"
         android:paddingTop="5dp"
         android:textColor="#FFFF"
         android:text="email@placeholder.com"
@@ -35,6 +37,8 @@
         android:id="@+id/buttonLogout"
         android:layout_width="100dp"
         android:layout_height="50dp"
+        android:background="@drawable/button_main"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_gravity="left"
         android:layout_marginTop="10dp"
         android:text="Logout"/>

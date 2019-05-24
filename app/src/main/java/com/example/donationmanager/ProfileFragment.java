@@ -1,6 +1,8 @@
 package com.example.donationmanager;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,13 +20,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
@@ -37,17 +39,16 @@ import static android.view.View.INVISIBLE;
 
 public class ProfileFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
+
     private EditText editCharityName, editFirstName, editLastName, editAddress, editCity, editPostcode, editState, editPhoneNumber;
     private int openHour, closeHour;
     private CheckBox mon, tue, wed, thu, fri, sat, sun;
+    private ProgressDialog progressDialog;
     private Button buttonSave;
     private String accountType;
     private TextView tvOpenHours, tvCloseHours, tvOpenDays;
     //initialise db reference
-    private DatabaseReference databaseReference;
-    private DatabaseReference dbRef;
-    private DatabaseReference dbDonors;
-    private DatabaseReference dbCharity;
+    private DatabaseReference databaseReference, databaseReference1;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth fbAuth;
     int accountPosition;
@@ -70,8 +71,34 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference1 = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseAuth.getCurrentUser().getUid());
 
 
+
+
+        if(firebaseAuth !=null){
+            databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    if (dataSnapshot.exists()) {
+                        Fragment fragment = null;
+                        fragment = new ManageProfileFragment();
+                        replaceFragment(fragment);
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        progressDialog = new ProgressDialog(getContext());
         //initialise user information fields
         tvOpenHours = (TextView) v.findViewById(R.id.tvOpenHours);
         tvCloseHours = (TextView) v.findViewById(R.id.tvCloseHours);
@@ -137,33 +164,14 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         spinner4.setAdapter(adapter3);
         spinner4.setOnItemSelectedListener(this);
 
-        // QQuery initialSetup
 
-//        dbRef = FirebaseDatabase.getInstance().getReference();
-//        fbAuth = FirebaseAuth.getInstance();
-//        FirebaseUser user = fbAuth.getCurrentUser();
-//        String userID = user.getUid();
-//
-//        Log.i("Query", "------------------------------------------------");
-//        Log.i("Query-UserID-1", userID);
-//        Log.i("Query-UserID-2", dbRef.child("users").child(userID).toString());
-//        Log.i("Query-UserID-3", String.valueOf(dbRef.child("users").child(userID).toString().equals("https://donationmanager-29eca.firebaseio.com/users/3kRZuRLhdIatLCGoZvZJUxHFxk13")));
-//        Log.i("Query-InitialSetup", dbRef.child("users").child(userID).child("initialSetup").toString());
-//        Log.i("Query-InitialSetup-2", String.valueOf(dbRef.child("users").child(userID).child("initialSetup").toString().equals("https://donationmanager-29eca.firebaseio.com/users/3kRZuRLhdIatLCGoZvZJUxHFxk13/initialSetup")));
-//        Log.i("Query-InitialSetup-Test", String.valueOf(dbRef.child("users").child(userID).child("initialSetup").equals(dbRef.child("users").child(userID).child("initialSetup"))));
-//        Log.i("Query-InitSetup-Test2", String.valueOf(!(dbRef.child("users").child(userID).child("initialSetup").equals(dbRef.child("users").child(userID).child("initialSetup")))));
-//
-//        Query query = FirebaseDatabase.getInstance().getReference("users")
-//                .orderByChild("uId")
-//                .equalTo(userID);
-//
-//        query.addListenerForSingleValueEvent(eventListener);
-//
-//        Log.i("Query-InitialSetup", String.valueOf(query));
+
 
         //hide or show fields based on account type
-        accountPosition = spinner1.getSelectedItemPosition() + 1;
-        if (spinner1.getSelectedItemPosition() + 1 == 1) {
+
+
+        accountPosition = spinner1.getSelectedItemPosition() +1;
+        /*if(spinner1.getSelectedItemPosition() + 1 == 1) {
             editCharityName.setVisibility(View.GONE);
             tvOpenDays.setVisibility(View.GONE);
             tvCloseHours.setVisibility(View.GONE);
@@ -187,9 +195,11 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         else {
             editFirstName.setVisibility(v.GONE);
             editLastName.setVisibility(v.GONE);
-        }
+        }*/
         return v;
     }
+
+
 
     private void saveUserInfo() {
         String firstName = editFirstName.getText().toString().trim();
@@ -200,15 +210,26 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         String state = spinner2.getSelectedItem().toString();
         String phoneNumber = editPhoneNumber.getText().toString().trim();
         accountType = "Donor";
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
         String uId = user.getUid();
 
         DonorInformation donorInformation = new DonorInformation(firstName, lastName, address,city, postcode, state, phoneNumber, accountType, uId, true);
 
-        databaseReference.child("users").child(uId).setValue(donorInformation);
-        Toast.makeText(getContext(), "Donor info saved", Toast.LENGTH_SHORT).show();
+
+        progressDialog.setMessage("Saving your Profile Information...");
+        progressDialog.show();
+        databaseReference.child("users").child(uId).setValue(donorInformation).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        progressDialog.dismiss();
+                    }
+                }, 2000); // 2000 milliseconds delay
+            }
+        });
+
     }
 
     private void saveCharityInfo() {

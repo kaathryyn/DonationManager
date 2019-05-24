@@ -4,10 +4,11 @@ import com.google.firebase.database.ServerValue;
 
 public class Booking {
 
-    private String bookingKey, charityName, donorID, description, donationType, furnitureType, dayName, timeSlot;
+    private String bookingKey, charityName, donorID, description, donationType, furnitureType, charityID, timeSlot;
     long timeStamp;
 
-    public Booking(String charityName, String donorID, String description, String donationType, String furnitureType, String timeSlot, long timeStamp) {
+    public Booking(String charityID, String charityName, String donorID, String description, String donationType, String furnitureType, String timeSlot, long timeStamp) {
+        this.charityID = charityID;
         this.charityName = charityName;
         this.donorID = donorID;
         this.description = description;
@@ -70,5 +71,29 @@ public class Booking {
 
     public void setFurnitureType(String furnitureType) {
         this.furnitureType = furnitureType;
+    }
+
+    public String getDonorID() {
+        return donorID;
+    }
+
+    public void setDonorID(String donorID) {
+        this.donorID = donorID;
+    }
+
+    public String getCharityID() {
+        return charityID;
+    }
+
+    public void setCharityID(String charityID) {
+        this.charityID = charityID;
+    }
+
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }

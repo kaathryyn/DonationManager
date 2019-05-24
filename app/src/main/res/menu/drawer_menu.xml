@@ -8,16 +8,19 @@
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_profile"
+            android:fontFamily="sans-serif-smallcaps"
             android:title="Profile" />
 
         <item
             android:id="@+id/nav_booking"
             android:icon="@drawable/ic_booking"
+            android:fontFamily="sans-serif-smallcaps"
             android:title="Make a booking" />
 
         <item
             android:id="@+id/nav_search"
             android:icon="@drawable/ic_search"
+            android:fontFamily="sans-serif-smallcaps"
             android:title="Search" />
     </group>
 

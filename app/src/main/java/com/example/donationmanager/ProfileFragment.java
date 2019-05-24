@@ -1,6 +1,8 @@
 package com.example.donationmanager;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -33,9 +36,11 @@ import static android.view.View.INVISIBLE;
 
 public class ProfileFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
+
     private EditText editCharityName, editFirstName, editLastName, editAddress, editCity, editPostcode, editState, editPhoneNumber;
     private int openHour, closeHour;
     private CheckBox mon, tue, wed, thu, fri, sat, sun;
+    private ProgressDialog progressDialog;
     private Button buttonSave;
     private String accountType;
     private TextView tvOpenHours, tvCloseHours, tvOpenDays;
@@ -63,7 +68,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
 
-
+        progressDialog = new ProgressDialog(getContext());
         //initialise user information fields
         tvOpenHours = (TextView) v.findViewById(R.id.tvOpenHours);
         tvCloseHours = (TextView) v.findViewById(R.id.tvCloseHours);
@@ -134,8 +139,10 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
 
         //hide or show fields based on account type
+
+
         accountPosition = spinner1.getSelectedItemPosition() +1;
-        if(spinner1.getSelectedItemPosition() + 1 == 1) {
+        /*if(spinner1.getSelectedItemPosition() + 1 == 1) {
             editCharityName.setVisibility(View.GONE);
             tvOpenDays.setVisibility(View.GONE);
             tvCloseHours.setVisibility(View.GONE);
@@ -159,7 +166,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         else {
             editFirstName.setVisibility(v.GONE);
             editLastName.setVisibility(v.GONE);
-        }
+        }*/
         return v;
 
     }
@@ -180,8 +187,21 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
         DonorInformation donorInformation = new DonorInformation(firstName, lastName, address,city, postcode, state, phoneNumber, accountType, uId, true);
 
-        databaseReference.child("users").child(uId).setValue(donorInformation);
-        Toast.makeText(getContext(), "Donor info saved", Toast.LENGTH_SHORT).show();
+
+        progressDialog.setMessage("Saving your Profile Information...");
+        progressDialog.show();
+        databaseReference.child("users").child(uId).setValue(donorInformation).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        progressDialog.dismiss();
+                    }
+                }, 2000); // 2000 milliseconds delay
+            }
+        });
+
     }
 
     private void saveCharityInfo() {

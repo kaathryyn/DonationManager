@@ -21,7 +21,7 @@
             android:id="@+id/nav_search"
             android:icon="@drawable/ic_search"
             android:fontFamily="sans-serif-smallcaps"
-            android:title="Search" />
+            android:title="Furniture Connect" />
     </group>
 
 

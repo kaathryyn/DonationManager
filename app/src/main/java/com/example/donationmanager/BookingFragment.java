@@ -72,6 +72,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
         uId = user.getUid();
+        System.out.println("uid is " + uId);
         firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("users");
 
 
@@ -147,8 +148,11 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     @Override
     public void onClick(View view) {
 
+        System.out.println("selected charity id is " + selectedCharityID);
+        System.out.println("uid is " + uId);
         //creates new booking object
         Booking booking = new Booking(
+                selectedCharityID,
                 charitySpinner.getSelectedItem().toString(),
                 uId,
                 descriptionEdittext.getText().toString(),
@@ -157,6 +161,9 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                 timeSlotSpinner.getSelectedItem().toString(),
                 bookingTimeStamp
         );
+
+        System.out.println("selected charity id is " + booking.getCharityID());
+        System.out.println("uid is " + booking.getDonorID());
 
         addBooking(booking);
         Fragment fragment = null;
@@ -211,7 +218,6 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                 case R.id.charitySpinner:
                     //find chosen charity
                     selectedCharity = parent.getSelectedItem().toString();
-                    System.out.println(selectedCharity);
 
                     //clear data array
                     Arrays.fill(days, false);
@@ -234,7 +240,9 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
                                     if (dscharityName.equals(selectedCharity)) {
                                         //assigning charity id
-                                        selectedCharityID = ds.getKey();
+                                        if(ds.getKey() != null)
+                                            selectedCharityID = ds.getKey();
+                                        System.out.println("charity id is " + selectedCharityID);
                                         charityOpen = Integer.parseInt(ds.child("openingHour").getValue().toString());
                                         charityOpenString = ds.child("openingHour").getValue().toString();
                                         charityClose = Integer.parseInt(ds.child("closingHour").getValue().toString());
@@ -329,7 +337,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                                             String accountType = ds.child("accountType").getValue().toString();
 
                                             //if current entry has the same name as the selected charityspinner save open and close hours as int
-                                            if (accountType.equals("Charity") && selectedCharity.equals(ds.child("charityName").getValue().toString())) {
+                                            if (accountType.equals("Charity") && selectedCharityID.equals(ds.getKey())) {
 
 
                                                 //add hours to spinner
@@ -344,7 +352,6 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                                                         timeSlotAdapter.clear();
                                                         for (count = charityOpen; count < charityClose; count += 100) {
                                                             clash = false;
-                                                            System.out.println("1 count: " + count);
                                                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
                                                                 if (ds.child("charityName").getValue().toString().equals(selectedCharity)) {
@@ -422,13 +429,10 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                                                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
                                                     if (ds.child("charityName").getValue().toString().equals(selectedCharity)) {
-                                                        System.out.println("Charity name checkpoint");
 
                                                         if (ds.child("timeStamp").getValue().toString().equals(bookingTimeStamp)) {
-                                                            System.out.println("timestamp checkpoint");
 
                                                             if (ds.child("timeSlot").getValue().toString().equals(Integer.toString(count))) {
-                                                                System.out.println("timeslot checkpoint");
                                                                 clash = true;
                                                             }
 

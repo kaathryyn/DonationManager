@@ -49,8 +49,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             firebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                     if (dataSnapshot.exists()) {
+                        System.out.println("Does user profile exist " + dataSnapshot.exists());
+
                         initialSetup = dataSnapshot.child("initialSetup").getValue().toString();
+                        System.out.println("Checkpoint1:already logged in" + initialSetup);
+                        finish();
+                        Intent i = new Intent(getApplicationContext(),HomeActivity.class);
+                        i.putExtra("initialSetup", initialSetup);
+                        startActivity(i);
                     }
                 }
 
@@ -117,8 +125,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     firebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            System.out.println("Does user profile exist " + dataSnapshot.exists());
                             if (dataSnapshot.exists()) {
                                 initialSetup = dataSnapshot.child("initialSetup").getValue().toString();
+                                System.out.println("Checkpoint2: LOGGIN IN " + initialSetup);
+
+                                finish();
+                                Intent i = new Intent(getApplicationContext(), HomeActivity.class);
+                                i.putExtra("initialSetup", initialSetup);
+                                startActivity(i);
+                            }
+
+                            else {
+                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                             }
                         }
 
@@ -128,14 +147,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                     });
 
-                    if(initialSetup != null) {
-                        finish();
-                        Intent i = new Intent(getApplicationContext(), HomeActivity.class);
-                        i.putExtra("initialSetup", initialSetup);
-                        startActivity(i);
-                    }
-                     else
-                         startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+
+
+
 
 
                 } else {

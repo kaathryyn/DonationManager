@@ -55,6 +55,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     String charityOpenString;
     String charityCloseString;
     Boolean clash;
+    Boolean dateSet = false;
 
     @Nullable
     @Override
@@ -325,6 +326,8 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                                 checkCalender.set(Calendar.SECOND, 0);
                                 checkCalender.set(Calendar.MILLISECOND, 0);
                                 bookingTimeStamp = checkCalender.getTimeInMillis();
+                                dateSet = true;
+                                System.out.println("date set " + dateSet);
 
 
                                 firebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -340,10 +343,6 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                                             if (accountType.equals("Charity") && selectedCharityID.equals(ds.getKey())) {
 
 
-                                                //add hours to spinner
-                                                //for (count = charityOpen; count < charityClose; count += 100) {
-                                                //clash = false;
-                                                //System.out.println("what is being iterated " + count);
                                                 timeSlotAdapter.clear();
                                                 DatabaseReference bookingDB = FirebaseDatabase.getInstance().getReference().child("Bookings");
                                                 bookingDB.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -448,7 +447,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                                             }
                                         });
 
-                                        if (!clash) {
+                                        if (!clash && dateSet) {
                                             String padded = String.format("%04d", count);
                                             timeSlotAdapter.add(padded);
                                         }

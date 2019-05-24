@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -152,29 +154,29 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     @Override
     public void onClick(View view) {
 
-        System.out.println("selected charity id is " + selectedCharityID);
-        System.out.println("uid is " + uId);
-        //creates new booking object
-        Booking booking = new Booking(
-                selectedCharityID,
-                charitySpinner.getSelectedItem().toString(),
-                uId,
-                descriptionEdittext.getText().toString(),
-                donationTypeSpinner.getSelectedItem().toString(),
-                furnitureTypeSpinner.getSelectedItem().toString(),
-                timeSlotSpinner.getSelectedItem().toString(),
-                bookingTimeStamp
-        );
+        if (errorCatching()) {
+            System.out.println("selected charity id is " + selectedCharityID);
+            System.out.println("uid is " + uId);
+            //creates new booking object
+            Booking booking = new Booking(
+                    selectedCharityID,
+                    charitySpinner.getSelectedItem().toString(),
+                    uId,
+                    descriptionEdittext.getText().toString(),
+                    donationTypeSpinner.getSelectedItem().toString(),
+                    furnitureTypeSpinner.getSelectedItem().toString(),
+                    timeSlotSpinner.getSelectedItem().toString(),
+                    bookingTimeStamp
+            );
 
-        System.out.println("selected charity id is " + booking.getCharityID());
-        System.out.println("uid is " + booking.getDonorID());
+            System.out.println("selected charity id is " + booking.getCharityID());
+            System.out.println("uid is " + booking.getDonorID());
 
-        addBooking(booking);
-        Fragment fragment = null;
-        fragment = new ManageProfileFragment();
-        replaceFragment(fragment);
-
-
+            addBooking(booking);
+            Fragment fragment = null;
+            fragment = new ManageProfileFragment();
+            replaceFragment(fragment);
+        }
 
     }
 
@@ -491,6 +493,21 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+    }
 
+    private boolean errorCatching() {
+        if (charitySpinner.getSelectedItem() == null) {
+            Toast.makeText(getContext(), "Please Select a Charity Organization", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (timeSlotSpinner.getSelectedItem() == null) {
+            Toast.makeText(getContext(), "Please Select an Available Time Slot", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (descriptionEdittext.getText().toString().isEmpty()) {
+            Toast.makeText(getContext(), "Please Enter Donation Description", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
     }
 }

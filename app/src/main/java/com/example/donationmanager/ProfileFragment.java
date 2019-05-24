@@ -23,8 +23,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 import org.w3c.dom.Text;
@@ -67,6 +70,29 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+
+
+        if(firebaseAuth !=null){
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    if (dataSnapshot.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("initialSetup").getValue().toString().equals("true")) {
+                        Fragment fragment = null;
+                        fragment = new ManageProfileFragment();
+                        replaceFragment(fragment);
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
 
         progressDialog = new ProgressDialog(getContext());
         //initialise user information fields
@@ -137,7 +163,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
 
 
-
         //hide or show fields based on account type
 
 
@@ -171,6 +196,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
     }
 
+
+
     private void saveUserInfo() {
         String firstName = editFirstName.getText().toString().trim();
         String lastName = editLastName.getText().toString().trim();
@@ -180,8 +207,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         String state = spinner2.getSelectedItem().toString();
         String phoneNumber = editPhoneNumber.getText().toString().trim();
         accountType = "Donor";
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
         String uId = user.getUid();
 

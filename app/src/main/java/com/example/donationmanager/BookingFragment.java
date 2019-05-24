@@ -1,6 +1,8 @@
 package com.example.donationmanager;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,7 +17,6 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.text.TextUtils;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,6 +41,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     private Button btnSubmit;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference firebaseDatabase;
+    private ProgressDialog progressDialog;
     Boolean[] days = new Boolean[]{false, false, false, false, false, false, false};
     ArrayAdapter<String> charityAdapter, timeSlotAdapter;
 
@@ -68,7 +70,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
         calendarView = (CalendarView) v.findViewById(R.id.calenderView);
         lastSelectedCalendar = Calendar.getInstance();
         calendarView.setMinDate(lastSelectedCalendar.getTimeInMillis() - 1000);
-
+        progressDialog = new ProgressDialog(getContext());
 
         //setup and initilaise firebase auth and firebasedb
         firebaseAuth = FirebaseAuth.getInstance();
@@ -196,11 +198,17 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
 
         // add post data to firebase database
-
+        progressDialog.setMessage("Saving your Booking...");
+        progressDialog.show();
         myRef.setValue(booking).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                //add a "Booking was successfull" message popup
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        progressDialog.dismiss();
+                    }
+                }, 2000); // 3000 milliseconds delay
             }
         });
 
@@ -485,28 +493,4 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
-
-//    public boolean errorChecking() {
-////        private Spinner charitySpinner, donationTypeSpinner, furnitureTypeSpinner, timeSlotSpinner, daySlotSpinner;
-////        private EditText descriptionEdittext;
-////        private Button btnSubmit;
-////        private FirebaseAuth firebaseAuth;
-////        private DatabaseReference firebaseDatabase;
-////        Boolean[] days = new Boolean[] {false,false,false,false,false,false,false};
-////        ArrayAdapter<String> charityAdapter, timeSlotAdapter;
-////
-////        Calendar lastSelectedCalendar = null;
-////        CalendarView calendarView;
-////
-////
-////        String selectedCharity;
-////        String selectedCharityID;
-////        long bookingTimeStamp;
-//
-//
-//        if (TextUtils.isEmpty(descriptionEdittext.getText().toString())) {
-//            return false;
-//        }
-//        return true;
-//    }
 }

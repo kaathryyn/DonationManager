@@ -145,6 +145,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(v.getContext(),R.array.states,android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(adapter2);
+        spinner2.setOnItemSelectedListener(this);
 
         //initialise opening hours spinner
 
@@ -152,6 +153,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(v.getContext(),R.array.hours,android.R.layout.simple_spinner_item);
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner3.setAdapter(adapter3);
+        spinner3.setOnItemSelectedListener(this);
 
         //initialise closing hours spinner
 
@@ -159,6 +161,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         ArrayAdapter<CharSequence> adapter4 = ArrayAdapter.createFromResource(v.getContext(),R.array.hours,android.R.layout.simple_spinner_item);
         adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner4.setAdapter(adapter3);
+        spinner4.setOnItemSelectedListener(this);
 
 
 

@@ -25,8 +25,8 @@ public class SearchFragment extends Fragment {
     private EditText search_field;
     private RecyclerView results_list;
     private ImageView search_btn;
-    private DatabaseReference bookingReference;
-    private ArrayList<Booking> list;
+    private DatabaseReference charityReference;
+    private ArrayList<CharityInformation> list;
 
     @Nullable
     @Override
@@ -34,9 +34,10 @@ public class SearchFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_search, container, false);
 
 
-        bookingReference = FirebaseDatabase.getInstance().getReference("Bookings");
+        charityReference = FirebaseDatabase.getInstance().getReference("users");
+        list = new ArrayList<>();
         search_field = v.findViewById(R.id.search_field);
-        results_list = v.findViewById(R.id.results_list);
+        results_list = v.findViewById(R.id.results_charity);
         search_btn = v.findViewById(R.id.search_btn);
         search_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,42 +49,51 @@ public class SearchFragment extends Fragment {
         });
 
 
+        charityReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String accountType = ds.child("accountType").getValue().toString();
+
+                    if (accountType.equals("Charity")) {
+                        list.add(ds.getValue(CharityInformation.class));
+
+                    }
+                }
+
+                CharityAdapter charityAdapter = new CharityAdapter(list);
+                results_list.setAdapter(charityAdapter);
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
+        });
+
+
         return v;
     }
 
     private void search(String str){
-        ArrayList<Booking> myList = new ArrayList<>();
-        for (Booking object : list){
-            if (object.getDescription().toLowerCase().contains(str.toLowerCase())){
+        ArrayList<CharityInformation> myList = new ArrayList<>();
+        for (CharityInformation object : list){
+            if (object.getCharityName().toLowerCase().contains(str.toLowerCase())
+                    || object.getCity().toLowerCase().contains(str.toLowerCase())
+                    || object.getPhoneNumber().toLowerCase().contains(str.toLowerCase())){
                 myList.add(object);
             }
         }
-        AdapterClass adapterClass = new AdapterClass(myList);
-        results_list.setAdapter(adapterClass);
+        CharityAdapter charityAdapter = new CharityAdapter(myList);
+        results_list.setAdapter(charityAdapter);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if(bookingReference != null){
-            bookingReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.exists()){
-                        list = new ArrayList<>();
-                        for(DataSnapshot ds : dataSnapshot.getChildren()){
-                            list.add(ds.getValue(Booking.class));
-                        }
-                        AdapterClass adapterClass = new AdapterClass(list);
-                        results_list.setAdapter(adapterClass);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
     }
 }

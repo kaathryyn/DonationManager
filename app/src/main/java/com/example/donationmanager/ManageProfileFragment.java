@@ -74,7 +74,7 @@ public class ManageProfileFragment extends Fragment{
             });
 
             UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        System.out.println("uid " + UID);
+            System.out.println("uid " + UID);
 
         list = new ArrayList<>();
 
@@ -93,8 +93,9 @@ public class ManageProfileFragment extends Fragment{
 
                         String donorID = ds.child("donorID").getValue().toString();
                         System.out.println("Checkpoint4.5: donorID " + donorID);
+                        String charityID = ds.child("charityID").getValue().toString();
 
-                        if (donorID.equals(UID)) {
+                        if (donorID.equals(UID) || charityID.equals(UID)) {
                             System.out.println("Checkpoint5: is uid = donorid yes");
 
                             list.add(ds.getValue(Booking.class));

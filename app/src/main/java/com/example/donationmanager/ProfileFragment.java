@@ -145,7 +145,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(v.getContext(),R.array.states,android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(adapter2);
-        spinner2.setOnItemSelectedListener(this);
 
         //initialise opening hours spinner
 

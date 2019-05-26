@@ -28,7 +28,10 @@ public class AdapterClass extends  RecyclerView.Adapter<AdapterClass.MyViewHolde
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
 
         myViewHolder.charityname_tv.setText(list.get(i).getCharityName());
-        myViewHolder.description_tv.setText(list.get(i).getDescription());
+        myViewHolder.description_tv.setText("Description: " + list.get(i).getDescription());
+        myViewHolder.furnitureType_tv.setText("Furniture Type: " + list.get(i).getFurnitureType());
+        myViewHolder.deliveryType_tv.setText("Delivery Type: " + list.get(i).getDonationType());
+        myViewHolder.timeSlot_tv.setText("Time: " + list.get(i).getTimeSlot());
     }
 
     @Override
@@ -37,11 +40,15 @@ public class AdapterClass extends  RecyclerView.Adapter<AdapterClass.MyViewHolde
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView charityname_tv, description_tv;
+        TextView charityname_tv, description_tv, furnitureType_tv, timeSlot_tv, deliveryType_tv, timeStamp_tv;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             charityname_tv = itemView.findViewById(R.id.charityname_tv);
             description_tv = itemView.findViewById(R.id.description_tv);
+            furnitureType_tv = itemView.findViewById(R.id.furnitureType);
+            timeSlot_tv = itemView.findViewById(R.id.timeSlot);
+            deliveryType_tv = itemView.findViewById(R.id.donationType);
+            timeStamp_tv = itemView.findViewById(R.id.timeStamp);
         }
     }
 

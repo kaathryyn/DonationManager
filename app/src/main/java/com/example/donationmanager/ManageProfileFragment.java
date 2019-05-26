@@ -46,35 +46,73 @@ public class ManageProfileFragment extends Fragment{
     private DatabaseReference bookingReference;
     private ArrayList<Booking> list;
     private String UID;
+    private FirebaseAuth firebaseAuth;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_manage_profile, container, false);
 
+            System.out.println("Checkpoint1: onCreate Start");
+            bookingReference = FirebaseDatabase.getInstance().getReference("Bookings");
+            search_field = v.findViewById(R.id.search_field);
+            results_list = v.findViewById(R.id.results_list);
+            editProfilebtn = v.findViewById(R.id.editProfilebtn);
+            editProfilebtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-        bookingReference = FirebaseDatabase.getInstance().getReference("Bookings");
-        search_field = v.findViewById(R.id.search_field);
-        results_list = v.findViewById(R.id.results_list);
-        editProfilebtn = v.findViewById(R.id.editProfilebtn);
-        editProfilebtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                }
+            });
+            search_btn = v.findViewById(R.id.search_btn);
+            search_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    search(search_field.getText().toString());
 
-            }
-        });
-        search_btn = v.findViewById(R.id.search_btn);
-        search_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                }
+            });
 
-                search(search_field.getText().toString());
+            UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        System.out.println("uid " + UID);
 
-            }
-        });
-
-        UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         list = new ArrayList<>();
+
+
+
+        if(bookingReference != null){
+            System.out.println("Checkpoint2: bookingref not null");
+            bookingReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    System.out.println("Checkpoint3: ondatachange Start");
+
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        System.out.println("Checkpoint4: looping through bookings");
+
+                        String donorID = ds.child("donorID").getValue().toString();
+                        System.out.println("Checkpoint4.5: donorID " + donorID);
+
+                        if (donorID.equals(UID)) {
+                            System.out.println("Checkpoint5: is uid = donorid yes");
+
+                            list.add(ds.getValue(Booking.class));
+                        }
+                    }
+
+                    AdapterClass adapterClass = new AdapterClass(list);
+                    results_list.setAdapter(adapterClass);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
 
         return v;
     }
@@ -92,37 +130,9 @@ public class ManageProfileFragment extends Fragment{
         results_list.setAdapter(adapterClass);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if(bookingReference != null){
 
-            bookingReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
-                        String donorID = ds.child("donorID").getValue().toString();
-
-                        if (donorID == UID) {
-                            list.add(ds.getValue(Booking.class));
-                        }
-                    }
-
-                    AdapterClass adapterClass = new AdapterClass(list);
-                    results_list.setAdapter(adapterClass);
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-    }
 }
 
 

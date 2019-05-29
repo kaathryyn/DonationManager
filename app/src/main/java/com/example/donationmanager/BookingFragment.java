@@ -18,6 +18,11 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,6 +32,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,7 +71,6 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final View v = inflater.inflate(R.layout.fragment_booking, container, false);
-
 
         calendarView = (CalendarView) v.findViewById(R.id.calenderView);
         lastSelectedCalendar = Calendar.getInstance();
@@ -480,7 +485,9 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
                 case R.id.donationTypeSpinner:
                     if (position == 0) {
-
+                        Fragment fragment = null;
+                        fragment = new MapFragment();
+                        replaceFragment(fragment);
                     }
                     break;
 

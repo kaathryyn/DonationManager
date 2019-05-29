@@ -17,35 +17,12 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="15dp"
-        android:text="Initial Profile Setup"
         android:fontFamily="sans-serif-smallcaps"
+        android:text="Edit Profile"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="30dp"
         app:layout_constraintStart_toStartOf="parent"
-        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvAccountType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
-        android:text="Account Type"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="15dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvProfileSetup" />
-
-    <Spinner
-        android:id="@+id/accountTypeSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAccountType" />
 
 
     <EditText
@@ -53,8 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
         android:ems="10"
         android:hint="@string/user_street"
         android:inputType="textPersonName"
@@ -65,9 +41,8 @@
         android:id="@+id/editCity"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
         android:ems="10"
         android:hint="@string/user_city"
         android:inputType="textPersonName"
@@ -86,8 +61,10 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/editUserPhone"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.527"
         app:layout_constraintStart_toEndOf="@+id/editPostcode"
-        app:layout_constraintTop_toBottomOf="@+id/editCity" />
+        app:layout_constraintTop_toBottomOf="@+id/editCity"
+        app:layout_constraintVertical_bias="0.55" />
 
     <EditText
         android:id="@+id/editUserPhone"
@@ -95,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:ems="10"
         android:hint="@string/user_pnumber"
         android:inputType="phone"
@@ -124,13 +101,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="Charity Name"
         android:inputType="textPersonName"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/openHourSpinner" />
 
@@ -140,7 +114,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="28dp"
         android:ems="10"
         android:hint="@string/user_firstname"
         android:inputType="textPersonName"
@@ -152,10 +126,8 @@
         android:id="@+id/editLastName"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:ems="10"
         android:hint="@string/user_lastname"
@@ -168,8 +140,8 @@
         android:layout_width="90dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
         android:ems="10"
         android:hint="@string/user_postcode"
         android:inputType="number"
@@ -186,12 +158,14 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:textColor="@color/colorPrimaryDark"
         android:text="@string/state_label"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toTopOf="@+id/editUserPhone"
         app:layout_constraintEnd_toStartOf="@+id/stateTypeSpinner"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toEndOf="@+id/editPostcode"
-        app:layout_constraintTop_toBottomOf="@+id/editAddress" />
+        app:layout_constraintTop_toBottomOf="@+id/editAddress"
+        app:layout_constraintVertical_bias="0.407" />
 
 
     <TextView
@@ -200,15 +174,15 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="18dp"
         android:text="Opening Time"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="15dp"
         app:layout_constraintEnd_toStartOf="@+id/tvCloseHours"
-        app:layout_constraintHorizontal_bias="0.0"
 
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accountTypeSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/tvProfileSetup" />
 
     <TextView
         android:id="@+id/tvCloseHours"
@@ -216,12 +190,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="212dp"
         android:layout_marginLeft="212dp"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/colorPrimaryDark"
+        android:layout_marginTop="18dp"
         android:text="Closing Time"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="15dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accountTypeSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/tvProfileSetup" />
 
 
     <Spinner
@@ -230,15 +204,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
 
         app:layout_constraintEnd_toStartOf="@+id/editLastName"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvOpenHours"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tvOpenHours" />
 
 
     <Spinner
@@ -247,7 +220,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="212dp"
         android:layout_marginLeft="212dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCloseHours" />
 
@@ -258,9 +231,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="Open Days"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editUserPhone" />
@@ -271,6 +244,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
         android:text="Mon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDays" />
@@ -279,9 +253,8 @@
         android:id="@+id/checkbox_tuesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:text="Tue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkbox_monday" />
@@ -290,8 +263,9 @@
         android:id="@+id/checkbox_wednesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="24dp"
         android:text="Wed"
         app:layout_constraintStart_toEndOf="@+id/checkbox_monday"
         app:layout_constraintTop_toBottomOf="@+id/tvDays" />
@@ -300,9 +274,8 @@
         android:id="@+id/checkbox_thursday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:text="Thu"
         app:layout_constraintStart_toEndOf="@+id/checkbox_tuesday"
         app:layout_constraintTop_toBottomOf="@+id/checkbox_wednesday" />
@@ -311,8 +284,9 @@
         android:id="@+id/checkbox_friday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="24dp"
         android:text="Fri"
         app:layout_constraintStart_toEndOf="@+id/checkbox_wednesday"
         app:layout_constraintTop_toBottomOf="@+id/tvDays" />
@@ -321,9 +295,8 @@
         android:id="@+id/checkbox_saturday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
         android:text="Sat"
         app:layout_constraintStart_toEndOf="@+id/checkbox_thursday"
         app:layout_constraintTop_toBottomOf="@+id/checkbox_friday" />
@@ -333,8 +306,9 @@
         android:id="@+id/checkbox_sunday"
         android:layout_width="62dp"
         android:layout_height="30dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
         android:text="Sun"
         app:layout_constraintStart_toEndOf="@+id/checkbox_friday"
         app:layout_constraintTop_toBottomOf="@+id/tvDays" />

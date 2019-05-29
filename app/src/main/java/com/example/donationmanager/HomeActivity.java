@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +23,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -45,7 +48,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         firebaseAuth = FirebaseAuth.getInstance();
 
         //User ID of logged in user
-        String uid = firebaseAuth.getCurrentUser().getUid();
+        final String uid = firebaseAuth.getCurrentUser().getUid();
         System.out.println(uid);
 
         //reference childs info using User ID
@@ -69,6 +72,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+
+
         if(firebaseAuth != null){
 
             firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(firebaseAuth.getCurrentUser().getUid());
@@ -84,11 +89,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         if (dataSnapshot.child("accountType").getValue().toString().equals("Donor")) {
                             System.out.println(dataSnapshot.child("accountType").getValue().toString());
                             String fName = dataSnapshot.child("firstName").getValue().toString();
-                            textViewName.setText(fName);
+                            String lName = dataSnapshot.child("lastName").getValue().toString();
+                            textViewName.setText(fName + " " + lName);
                         } else if (dataSnapshot.child("accountType").getValue().toString().equals("Charity")) {
                             System.out.println(dataSnapshot.child("accountType").getValue().toString());
-                            String fName = dataSnapshot.child("charityName").getValue().toString();
-                            textViewName.setText(fName);
+                            String charityName = dataSnapshot.child("charityName").getValue().toString();
+                            textViewName.setText(charityName);
                         }
 
                     }

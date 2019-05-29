@@ -61,9 +61,7 @@ public class ManageProfileFragment extends Fragment{
             editProfilebtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Fragment fragment = null;
-                    fragment = new editProfileFragment();
-                    replaceFragment(fragment);
+
                 }
             });
             search_btn = v.findViewById(R.id.search_btn);
@@ -133,12 +131,9 @@ public class ManageProfileFragment extends Fragment{
         results_list.setAdapter(adapterClass);
     }
 
-    private void replaceFragment(Fragment fragment) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
+
+
+
 }
 
 

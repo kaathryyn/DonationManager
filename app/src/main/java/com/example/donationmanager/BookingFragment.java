@@ -500,6 +500,10 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
             Toast.makeText(getContext(), "Please Select a Charity Organization", Toast.LENGTH_LONG).show();
             return false;
         }
+        if (dateSet == false) {
+            Toast.makeText(getContext(), "Please Select A Valid Booking Date", Toast.LENGTH_LONG).show();
+            return false;
+        }
         if (timeSlotSpinner.getSelectedItem() == null) {
             Toast.makeText(getContext(), "Please Select an Available Time Slot", Toast.LENGTH_LONG).show();
             return false;

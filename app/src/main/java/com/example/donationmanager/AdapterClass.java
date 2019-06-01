@@ -26,7 +26,6 @@ import java.util.Locale;
 public class AdapterClass extends  RecyclerView.Adapter<AdapterClass.MyViewHolder> {
 
     private DatabaseReference databaseReference;
-    ImageButton deleteButton;
     ArrayList<Booking> list;
     public AdapterClass(ArrayList<Booking> list){
         this.list = list;
@@ -37,12 +36,11 @@ public class AdapterClass extends  RecyclerView.Adapter<AdapterClass.MyViewHolde
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_layout,viewGroup, false);
-        deleteButton = (ImageButton) view.findViewById(R.id.delete_btn);
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int i) {
         final int x = i;
         myViewHolder.charityname_tv.setText(list.get(i).getCharityName());
         myViewHolder.description_tv.setText("Description: " + list.get(i).getDescription());
@@ -53,19 +51,16 @@ public class AdapterClass extends  RecyclerView.Adapter<AdapterClass.MyViewHolde
         String date = timestampToString(list.get(i).getTimeStamp());
         myViewHolder.timeStamp_tv.setText("Date: " + date);
 
-        deleteButton.setOnClickListener(new View.OnClickListener() {
+        myViewHolder.delete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("Delete button triggered" + list.get(myViewHolder.getAdapterPosition()).getBookingKey());
                 final String bookingKey = list.get(myViewHolder.getAdapterPosition()).getBookingKey();
                 databaseReference = FirebaseDatabase.getInstance().getReference("Bookings");
-                databaseReference.child(bookingKey).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        
-
-                    }
-                });
+                databaseReference.child(bookingKey).removeValue();
+                list.remove(i);
+                notifyItemRemoved(i);
+                notifyItemChanged(i, list.size());
             }
 
         });
@@ -81,6 +76,7 @@ public class AdapterClass extends  RecyclerView.Adapter<AdapterClass.MyViewHolde
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView charityname_tv, description_tv, furnitureType_tv, timeSlot_tv, deliveryType_tv, timeStamp_tv;
+        ImageButton delete_btn;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             databaseReference = FirebaseDatabase.getInstance().getReference("Bookings");
@@ -90,7 +86,7 @@ public class AdapterClass extends  RecyclerView.Adapter<AdapterClass.MyViewHolde
             timeSlot_tv = itemView.findViewById(R.id.timeSlot);
             deliveryType_tv = itemView.findViewById(R.id.donationType);
             timeStamp_tv = itemView.findViewById(R.id.timeStamp);
-
+            delete_btn = itemView.findViewById(R.id.delete_btn);
 
         }
     }

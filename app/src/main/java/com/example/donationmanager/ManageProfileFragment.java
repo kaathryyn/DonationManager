@@ -140,7 +140,3 @@ public class ManageProfileFragment extends Fragment{
         transaction.commit();
     }
 }
-
-
-
-

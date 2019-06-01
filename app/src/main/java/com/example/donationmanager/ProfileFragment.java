@@ -50,6 +50,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     //initialise db reference
     private DatabaseReference databaseReference, databaseReference1;
     private FirebaseAuth firebaseAuth;
+    private FirebaseAuth fbAuth;
     int accountPosition;
     Spinner spinner1, spinner2, spinner3, spinner4;
 
@@ -195,7 +196,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             editLastName.setVisibility(v.GONE);
         }*/
         return v;
-
     }
 
 
@@ -275,7 +275,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             spinner4.setVisibility(View.GONE);
             spinner3.setVisibility(View.GONE);
         }
-
         else if (parent.getSelectedItemPosition() == 1) {
             editFirstName.setVisibility(View.GONE);
             editLastName.setVisibility(View.GONE);
@@ -293,10 +292,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
             spinner4.setVisibility(View.VISIBLE);
             spinner3.setVisibility(View.VISIBLE);
-
-
-
-
         }
 
         String text = parent.getItemAtPosition(position).toString();

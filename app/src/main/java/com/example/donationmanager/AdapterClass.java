@@ -2,6 +2,7 @@ package com.example.donationmanager;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,6 +20,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class AdapterClass extends  RecyclerView.Adapter<AdapterClass.MyViewHolder> {
 
@@ -27,13 +31,13 @@ public class AdapterClass extends  RecyclerView.Adapter<AdapterClass.MyViewHolde
     public AdapterClass(ArrayList<Booking> list){
         this.list = list;
     }
+    String bookingKey;
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_layout,viewGroup, false);
         deleteButton = (ImageButton) view.findViewById(R.id.delete_btn);
-
         return new MyViewHolder(view);
     }
 
@@ -45,6 +49,9 @@ public class AdapterClass extends  RecyclerView.Adapter<AdapterClass.MyViewHolde
         myViewHolder.furnitureType_tv.setText("Furniture Type: " + list.get(i).getFurnitureType());
         myViewHolder.deliveryType_tv.setText("Delivery Type: " + list.get(i).getDonationType());
         myViewHolder.timeSlot_tv.setText("Time: " + list.get(i).getTimeSlot());
+
+        String date = timestampToString(list.get(i).getTimeStamp());
+        myViewHolder.timeStamp_tv.setText("Date: " + date);
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +93,15 @@ public class AdapterClass extends  RecyclerView.Adapter<AdapterClass.MyViewHolde
 
 
         }
+    }
+
+    private String timestampToString(long time){
+
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        calendar.setTimeInMillis(time);
+        String date = DateFormat.format("dd/MM/yyyy", calendar).toString();
+        return date;
+
     }
 
 }

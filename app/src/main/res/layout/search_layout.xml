@@ -16,6 +16,23 @@
         android:padding="8dp">
 
         <TextView
+            android:id="@+id/timeSlot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:padding="1dp"
+            android:text="Time"
+            android:textColor="@android:color/white"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/donationType" />
+
+        <TextView
             android:id="@+id/charityname_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -26,10 +43,11 @@
             android:layout_marginRight="8dp"
             android:padding="1dp"
             android:text="Charity Name"
+            android:textStyle="bold"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             app:fontFamily="sans-serif-smallcaps"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+            app:layout_constraintEnd_toStartOf="@+id/delete_btn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -83,23 +101,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/charityname_tv" />
-
-        <TextView
-            android:id="@+id/timeSlot"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:padding="1dp"
-            android:text="Time"
-            android:textColor="@android:color/white"
-            android:textSize="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/donationType" />
 
         <TextView
             android:id="@+id/timeStamp"

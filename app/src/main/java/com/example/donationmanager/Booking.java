@@ -2,6 +2,9 @@ package com.example.donationmanager;
 
 import com.google.firebase.database.ServerValue;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Booking {
 
     private String bookingKey, charityName, donorID, description, donationType, furnitureType, charityID, timeSlot;
@@ -21,8 +24,6 @@ public class Booking {
     public Booking() {
 
     }
-
-
 
 
     public String getTimeSlot() {

@@ -481,7 +481,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                     break;
 
                 case R.id.donationTypeSpinner:
-                    if (position == 0) {
+                    if (parent.getSelectedItemPosition() == 0 ) {
 
                     }
                     break;

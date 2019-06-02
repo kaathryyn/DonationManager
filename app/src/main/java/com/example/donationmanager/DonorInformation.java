@@ -28,4 +28,29 @@ public class DonorInformation {
     }
 
     public DonorInformation() {}
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 }
+

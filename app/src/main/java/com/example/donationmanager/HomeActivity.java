@@ -32,7 +32,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     //firebase auth object
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference firebaseDatabase;
+    private DatabaseReference firebaseDatabase, FirebaseDatabase1;
     String initialSetup = "null";
     Menu menu;
     MenuItem profile;
@@ -194,6 +194,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_search:
                 if (initialSetup.equals("true"))
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchFragment()).commit();
+                break;
+
+            case R.id.nav_search_donor:
+                if (initialSetup.equals("true"))
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchFragment_Donor()).commit();
                 break;
 
         }

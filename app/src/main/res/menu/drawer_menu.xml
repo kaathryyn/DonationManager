@@ -21,7 +21,13 @@
             android:id="@+id/nav_search"
             android:icon="@drawable/ic_search"
             android:fontFamily="sans-serif-smallcaps"
-            android:title="Search" />
+            android:title="Search Charities" />
+
+        <item
+            android:id="@+id/nav_search_donor"
+            android:icon="@drawable/ic_search"
+            android:fontFamily="sans-serif-smallcaps"
+            android:title="Search Donors" />
     </group>
 
 

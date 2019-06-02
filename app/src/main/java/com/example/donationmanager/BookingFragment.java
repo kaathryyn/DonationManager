@@ -44,7 +44,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
     private Spinner charitySpinner, donationTypeSpinner, furnitureTypeSpinner, timeSlotSpinner, daySlotSpinner;
     private EditText descriptionEdittext;
-    private Button btnSubmit;
+    private Button btnSubmit, btnOpenMap;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference firebaseDatabase;
     private ProgressDialog progressDialog;
@@ -145,6 +145,8 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
 
         descriptionEdittext = v.findViewById(R.id.descriptionEdittext);
         btnSubmit = v.findViewById(R.id.btnSubmit);
+        btnOpenMap = v.findViewById(R.id.btnOpenMap);
+        btnOpenMap.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
 
 
@@ -484,7 +486,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, A
                     break;
 
                 case R.id.donationTypeSpinner:
-                    if (position == 0) {
+                    if (position == 1) {
                         Fragment fragment = null;
                         fragment = new MapFragment();
                         replaceFragment(fragment);

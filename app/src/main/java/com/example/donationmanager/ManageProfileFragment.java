@@ -10,9 +10,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -53,27 +56,51 @@ public class ManageProfileFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_manage_profile, container, false);
 
-            System.out.println("Checkpoint1: onCreate Start");
-            bookingReference = FirebaseDatabase.getInstance().getReference("Bookings");
-            search_field = v.findViewById(R.id.search_field);
-            results_list = v.findViewById(R.id.results_list);
-            editProfilebtn = v.findViewById(R.id.editProfilebtn);
-            editProfilebtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Fragment fragment = null;
-                    fragment = new editProfileFragment();
-                    replaceFragment(fragment);
-                }
-            });
-            search_btn = v.findViewById(R.id.search_btn);
-            search_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    search(search_field.getText().toString());
+        System.out.println("Checkpoint1: onCreate Start");
+        bookingReference = FirebaseDatabase.getInstance().getReference("Bookings");
+        search_field = v.findViewById(R.id.search_field);
+        results_list = v.findViewById(R.id.results_list);
+        editProfilebtn = v.findViewById(R.id.editProfilebtn);
+        editProfilebtn.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Fragment fragment = null;
+            fragment = new editProfileFragment();
+            replaceFragment(fragment);
+        }
+        });
+        search_btn = v.findViewById(R.id.search_btn);
+        search_btn.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            performSearch();
+        }
+        });
 
+        search_field.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    performSearch();
+                    return true;
                 }
-            });
+                return false;
+            }
+        });
+
+        search_field.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH){
+                    performSearch();
+                    return true;
+                }
+                return false;
+            }
+        });
 
             UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
             System.out.println("uid " + UID);
@@ -138,5 +165,12 @@ public class ManageProfileFragment extends Fragment{
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    private void performSearch() {
+        search_field.clearFocus();
+        InputMethodManager in = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(search_field.getWindowToken(), 0);
+        search(search_field.getText().toString());
     }
 }

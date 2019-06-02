@@ -12,7 +12,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="8dp">
 
@@ -25,9 +25,9 @@
             android:layout_marginTop="8dp"
             android:padding="1dp"
             android:text="Hours"
-            android:textStyle="bold"
             android:textColor="@android:color/white"
             android:textSize="15dp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/days_tv" />
 
@@ -75,7 +75,7 @@
             android:textColor="@android:color/white"
             android:textSize="15dp"
             app:layout_constraintStart_toEndOf="@+id/state_tv"
-            app:layout_constraintTop_toBottomOf="@+id/charityname_tv" />
+            app:layout_constraintTop_toBottomOf="@+id/address_tv" />
 
         <TextView
             android:id="@+id/state_tv"
@@ -89,7 +89,7 @@
             android:textColor="@android:color/white"
             android:textSize="15dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/charityname_tv" />
+            app:layout_constraintTop_toBottomOf="@+id/address_tv" />
 
         <TextView
             android:id="@+id/phone_tv"
@@ -100,13 +100,32 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
+            android:layout_marginBottom="16dp"
             android:padding="1dp"
             android:text="Phone"
             android:textColor="@android:color/white"
             android:textSize="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/hours_tv" />
+
+        <TextView
+            android:id="@+id/address_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:padding="1dp"
+            android:text="Address"
+            android:textColor="@android:color/white"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/charityname_tv" />
 
 
     </android.support.constraint.ConstraintLayout>

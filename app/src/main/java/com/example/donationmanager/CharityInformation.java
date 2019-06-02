@@ -188,4 +188,16 @@ public class CharityInformation {
     public void setInitialSetup(boolean initialSetup) {
         this.initialSetup = initialSetup;
     }
+
+    public String daysOpen(){
+        String days = "";
+        if(isMondayOpen()) days += "mon ";
+        if(isTuesdayOpen()) days += "tue ";
+        if(isWednesdayOpen()) days += "wed ";
+        if(isThursdayOpen()) days += "thur ";
+        if(isFridayOpen()) days += "fri ";
+        if(isSaturdayOpen()) days += "sat ";
+        if(isSundayOpen()) days += "sun ";
+        return days;
+    }
 }

@@ -83,7 +83,9 @@ public class SearchFragment_Donor extends Fragment {
         for (DonorInformation object : list){
             if (object.getFirstName().toLowerCase().contains(str.toLowerCase())
                     || object.getCity().toLowerCase().contains(str.toLowerCase())
-                    || object.getPhoneNumber().toLowerCase().contains(str.toLowerCase())){
+                    || object.getPhoneNumber().toLowerCase().contains(str.toLowerCase())
+                    || object.getAddress().toLowerCase().contains(str.toLowerCase())
+                    || object.getState().toLowerCase().contains(str.toLowerCase())){
                 myList.add(object);
             }
         }

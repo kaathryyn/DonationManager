@@ -27,6 +27,7 @@
             android:layout_marginRight="8dp"
             android:padding="1dp"
             android:text="Donor Name"
+            android:textStyle="bold"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             app:fontFamily="sans-serif-smallcaps"
@@ -45,7 +46,6 @@
             android:text="Address"
             android:textColor="@android:color/white"
             android:textSize="15dp"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sdonorName_tv" />
 

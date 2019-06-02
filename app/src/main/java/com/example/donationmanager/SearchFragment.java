@@ -81,10 +81,14 @@ public class SearchFragment extends Fragment {
 
     private void search(String str){
         ArrayList<CharityInformation> myList = new ArrayList<>();
+
         for (CharityInformation object : list){
             if (object.getCharityName().toLowerCase().contains(str.toLowerCase())
                     || object.getCity().toLowerCase().contains(str.toLowerCase())
-                    || object.getPhoneNumber().toLowerCase().contains(str.toLowerCase())){
+                    || object.getPhoneNumber().toLowerCase().contains(str.toLowerCase())
+                    || object.getState().toLowerCase().contains(str.toLowerCase())
+                    || object.getAddress().toLowerCase().contains(str.toLowerCase())
+                    || object.daysOpen().toLowerCase().contains(str.toLowerCase())){
                 myList.add(object);
             }
         }

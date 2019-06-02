@@ -32,6 +32,7 @@ public class CharityAdapter extends  RecyclerView.Adapter<CharityAdapter.MyViewH
         myViewHolder.city_tv.setText("City: " + list.get(i).getCity());
         myViewHolder.state_tv.setText("State: " + list.get(i).getState());
         myViewHolder.hours_tv.setText("Hours: " + String.format("%04d", list.get(i).getOpeningHour()) + " - " + String.format("%04d", list.get(i).getClosingHour()));
+        myViewHolder.address_tv.setText("Address: " + list.get(i).getAddress());
 
         if (list.get(i).mondayOpen) days += "Mon/";
         if (list.get(i).tuesdayOpen) days += "Tue/";
@@ -51,7 +52,7 @@ public class CharityAdapter extends  RecyclerView.Adapter<CharityAdapter.MyViewH
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView charityname_tv, city_tv, state_tv, phone_tv, hours_tv, days_tv;
+        TextView charityname_tv, city_tv, state_tv, phone_tv, hours_tv, days_tv, address_tv;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             charityname_tv = itemView.findViewById(R.id.charityname_tv);
@@ -60,6 +61,7 @@ public class CharityAdapter extends  RecyclerView.Adapter<CharityAdapter.MyViewH
             phone_tv = itemView.findViewById(R.id.phone_tv);
             hours_tv = itemView.findViewById(R.id.hours_tv);
             days_tv = itemView.findViewById(R.id.days_tv);
+            address_tv = itemView.findViewById(R.id.address_tv);
         }
     }
 }
